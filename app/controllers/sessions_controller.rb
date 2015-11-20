@@ -5,10 +5,11 @@ class SessionsController < ApplicationController
       @user = User.from_omniauth(request.env['omniauth.auth'])
       session[:user_id] = @user.id
       flash[:success] = "Welcome, #{@user.name}!"
+      redirect_to conferences_path
     rescue
-      flash[:warning] = 'There was an error while trying to authenticate you...'
+      flash[:warning] = 'There was an error while trying to authenticate you.'
+      redirect_to root_path
     end
-    redirect_to root_path
   end
 
   def destroy
