@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  last: MyString
+  first: MyString
+  email: MyString
+  affiliation: MyString
+  conference_id: 
+
+two:
+  last: MyString
+  first: MyString
+  email: MyString
+  affiliation: MyString
+  conference_id: 

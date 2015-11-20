@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  invite_limit: 1
+  poster_limit: 1
+  deadline: 2015-11-14 20:34:55
+  open: false
+  user_id: 
+
+two:
+  name: MyString
+  invite_limit: 1
+  poster_limit: 1
+  deadline: 2015-11-14 20:34:55
+  open: false
+  user_id: 
