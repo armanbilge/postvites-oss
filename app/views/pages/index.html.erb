@@ -1,7 +1,44 @@
-<h1>postvite</h1>
+<div class="jumbotron">
+	<div class="container text-center">
+		<h1>postvite</h1>
+		<p>A poster-invitation system for academic conferences</p>
+		<div class="social text-center">
+			<ul class="list-inline">
+				<li><%= link_to image_tag('signin-google.png', style: 'vertical-align: -8px'), '/auth/google' %></li>
+			</ul>
+		</div>
+	</div>
+</div>
 
-<% if current_user.nil? %>
-<a href="/auth/google">Sign In with Google</a>
-<% else %>
-<a href="/signout">Sign Out <%= current_user.name %></a>
-<% end %>
+<div class="container">
+
+	<div class="row">
+
+		<h2>Concept</h2>
+
+		<p><b>postvite</b> aims to increase the value of presenting a poster at a conference by giving presenters the opportunity to personally invite any attendee to visit their poster. Before the conference, all presenters recieve an email directing them to a webpage to select attendees to invite. When the system closes a few days later, attendees are emailed a compilation of all invites received.</p>
+
+		<h2>Usage</h2>
+
+		<ol>
+			<li>Sign in with Google</li>
+			<li>Create a new conference</li>
+			<li>Upload attendee and presenter data</li>
+			<li>Let presenters select attendees to invite</li>
+			<li>Return later to send invitations</li>
+			<li>Done!</li>
+		</ol>
+
+		<h2>About</h2>
+
+		<p><b>postvite</b> is developed and maintained by <%= link_to 'Arman Bilge', 'http://armanbilge.com' %> based on the concept proposed by <%= link_to 'Howard Rundle', 'http://hrundle.weebly.com' %>.</p>
+
+		<p>Please <%= link_to 'report any issues that you encounter', '//github.com/armanbilge/postvite/issues/new' %> and feel free to <%= link_to 'fork the source code', '//github.com/armanbilge/postvite' %>. Thank you!</p>
+
+		<p>This website is supported by the <%= link_to 'Society for the Study of Evolution', 'http://www.evolutionsociety.org' %>.</p>
+
+		<%= image_tag 'http://www.evolutionsociety.org/themes/Evolution/images/SSE-LOGO-106.png' %>
+
+	</div>
+
+</div>
