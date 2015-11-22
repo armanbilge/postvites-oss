@@ -1,0 +1,11 @@
+<div class="container">
+
+	<h1>Manage <emph><%= @conference.name %></emph></h1>
+
+	<%= form_for @conference, validate: true, html: {class: 'form-horizontal'} do |f| %>
+		<p>Presenters can invite up to <%= f.text_field :invite_limit, size: 2, style: 'text-align: right' %> attendees.</p>
+	  <p>Attendees can be invited to up to <%= f.text_field :poster_limit, size: 2, style: 'text-align: right' %> posters.</p>
+	  <%= f.submit 'Update Limits', class: 'btn btn-primary' %>
+	<% end %>
+
+</div>

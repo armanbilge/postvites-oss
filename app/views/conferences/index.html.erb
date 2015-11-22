@@ -1,0 +1,23 @@
+<div class="container">
+
+	<% if current_user.conferences.count > 0 %>
+	  <h1>My Conferences</h1>
+
+	  <table>
+	    <% current_user.conferences.sort_by { |c| c.name }.each do |conference| %>
+	      <tr>
+	        <td style="width: 270px"><%= conference.name %></td>
+	        <td><%= link_to 'Manage', conference %></td>
+	      </tr>
+	    <% end %>
+	  </table>
+	<% end %>
+
+  <h2>New Conference</h2>
+  <%= form_for @conference, validate: true, html: {class: 'form-horizontal'} do |f| %>
+    <%= f.label :name, 'Name:', style: 'width: 64px' %>
+    <%= f.text_field :name %>
+    <%= f.submit 'Create', class: 'btn btn-primary' %>
+  <% end %>
+
+</div>

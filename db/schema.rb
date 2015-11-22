@@ -38,13 +38,13 @@ ActiveRecord::Schema.define(version: 20151114075534) do
 
   create_table "conferences", force: :cascade do |t|
     t.string   "name"
-    t.integer  "invite_limit"
-    t.integer  "poster_limit"
-    t.datetime "deadline"
-    t.boolean  "open"
+    t.integer  "invite_limit",       default: 3
+    t.integer  "poster_limit",       default: 5
+    t.boolean  "presenters_emailed", default: false
+    t.boolean  "attendees_emailed",  default: false
     t.integer  "user_id"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   add_index "conferences", ["user_id"], name: "index_conferences_on_user_id", using: :btree
