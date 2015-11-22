@@ -2,9 +2,7 @@
 <html>
 <head>
   <title>postvite</title>
-  <%= stylesheet_link_tag '//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/simplex/bootstrap.min.css' %>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag '//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/simplex/bootstrap.min.css', media: 'all' %>
   <%= csrf_meta_tags %>
   <% if content_for? :for_head %>
     <%= yield :for_head %>
@@ -18,7 +16,9 @@
 </div>
 <% end %>
 
-<%= yield %>
+<div style="font-size: 16px; width: 800px" class="container">
+  <%= yield %>
+</div>
 
 </body>
 </html>

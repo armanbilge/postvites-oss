@@ -1,5 +1,5 @@
-<div class="jumbotron">
-	<div class="container text-center">
+<div class="jumbotron" style="background: url('/assets/poster-session.jpg') no-repeat center center; background-size: cover">
+	<div class="container text-center" style="color: rgb(68, 68, 68); background: rgba(255, 255, 255, 0.9); width: 80%; margin-top: 0; border-radius: 8px">
 		<h1>postvite</h1>
 		<p>A poster-invitation system for academic conferences</p>
 		<div class="social text-center">
@@ -7,34 +7,30 @@
 				<li><%= link_to image_tag('signin-google.png'), '/auth/google' %></li>
 			</ul>
 		</div>
-	</div>
+  </div>
 </div>
 
-<div style="font-size: 16px; width: 800px" class="container">
+<h1>Concept</h1>
 
-  <h1>Concept</h1>
+<p><strong>postvite</strong> increases the value of presenting a poster at a conference by giving presenters the opportunity to personally invite any attendee to visit their poster. Before the conference, all presenters receive an email directing them to a webpage to select attendees to invite. A few days later, attendees are sent a compilation of all of their invitations.</p>
 
-  <p><strong>postvite</strong> increases the value of presenting a poster at a conference by giving presenters the opportunity to personally invite any attendee to visit their poster. Before the conference, all presenters recieve an email directing them to a webpage to select attendees to invite. A few days later, attendees are sent a compilation of all of their invitations.</p>
+<h1>Usage</h1>
 
-  <h1>Usage</h1>
+<ol>
+	<li>Sign in with Google</li>
+	<li>Create a new conference</li>
+	<li>Upload attendee and presenter data</li>
+	<li>Let presenters select attendees to invite</li>
+	<li>Return later to send invitations</li>
+	<li>Done!</li>
+</ol>
 
-  <ol>
-  	<li>Sign in with Google</li>
-  	<li>Create a new conference</li>
-  	<li>Upload attendee and presenter data</li>
-  	<li>Let presenters select attendees to invite</li>
-  	<li>Return later to send invitations</li>
-  	<li>Done!</li>
-  </ol>
+<h1>About</h1>
 
-  <h1>About</h1>
+<p><strong>postvite</strong> is developed and maintained by <%= link_to 'Arman Bilge', 'http://armanbilge.com' %>. Photo credit to <%= link_to 'Robert Gardner', 'http://www2.warwick.ac.uk/fac/sci/sbdtc/people/students/2007/robert_gardner/' %>.</p>
 
-  <p><strong>postvite</strong> is developed and maintained by <%= link_to 'Arman Bilge', 'http://armanbilge.com' %>.</p>
+<p><%= link_to 'Please report any issues', '//github.com/armanbilge/postvite/issues/new' %> and feel free to <%= link_to 'fork the source code', '//github.com/armanbilge/postvite' %>. Thank you!</p>
 
-  <p><%= link_to 'Please report any issues', '//github.com/armanbilge/postvite/issues/new' %> and feel free to <%= link_to 'fork the source code', '//github.com/armanbilge/postvite' %>. Thank you!</p>
+<p>This website is supported by the <%= link_to 'Society for the Study of Evolution', 'http://www.evolutionsociety.org' %>.</p>
 
-  <p>This website is supported by the <%= link_to 'Society for the Study of Evolution', 'http://www.evolutionsociety.org' %>.</p>
-
-  <%= image_tag 'http://www.evolutionsociety.org/themes/Evolution/images/SSE-LOGO-106.png', style: 'margin:0px auto; display:block' %>
-
-</div>
+<%= image_tag 'http://www.evolutionsociety.org/themes/Evolution/images/SSE-LOGO-106.png', style: 'margin:0px auto; display:block' %>
