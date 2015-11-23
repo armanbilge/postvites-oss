@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/signout', to: 'sessions#destroy', as: 'signout'
 
   resources :conferences
+  patch '/conferences/:id/upload', to: 'conferences#upload'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

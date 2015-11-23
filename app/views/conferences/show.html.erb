@@ -1,11 +1,243 @@
-<div class="container">
+<h1>Manage <%= @conference.name %></h1>
 
-	<h1>Manage <emph><%= @conference.name %></emph></h1>
+<table style="width: 100%">
+  <tr>
+    <td>
+      <div class="well">
+      	<%= form_for @conference, validate: true, html: {class: 'form-horizontal'} do |f| %>
+          <% disabled = @conference.step > 1%>
+      		<p>Presenters can invite up to <%= f.text_field :invite_limit, size: 2, style: 'text-align: right', disabled: disabled %> attendees.</p>
+      	  <p>Attendees can be invited to up to <%= f.text_field :poster_limit, size: 2, style: 'text-align: right', disabled: disabled %> posters.</p>
+      	  <%= f.submit 'Update Limits', class: 'btn btn-primary', disabled: disabled %>
+      	<% end %>
+      </div>
+    </td>
+    <td>
+      <div style="width: 16px">
+    </td>
+    <td>
+      <div class="panel panel-default" style="width: 100%">
+        <div class="panel-heading">To Do</div>
+        <div class="panel-body">
+          <ol>
+            <% ['Upload data', 'Email presenters', 'Email invitations'].each_with_index do |t, i| %>
+                <% if i > @conference.step %>
+                  <div style="opacity: 0.5"><li><%= t %></li></div>
+                <% elsif i < @conference.step %>
+                  <s><li><%= t %></li></s>
+                <% elsif i == @conference.step %>
+                  <li><%= t %></li>
+                <% end %>
+            <% end %>
+          </ol>
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>
 
-	<%= form_for @conference, validate: true, html: {class: 'form-horizontal'} do |f| %>
-		<p>Presenters can invite up to <%= f.text_field :invite_limit, size: 2, style: 'text-align: right' %> attendees.</p>
-	  <p>Attendees can be invited to up to <%= f.text_field :poster_limit, size: 2, style: 'text-align: right' %> posters.</p>
-	  <%= f.submit 'Update Limits', class: 'btn btn-primary' %>
-	<% end %>
+<div class="well">
+  <table style="width: 100%">
+    <tr>
+      <% begin %>
+        <% disabled = @conference.step > 1 %>
+        <td>
+          <% if @conference.attendees.count > 0 %>
+            <%= link_to 'View Attendee Data', '#', data: { toggle: 'modal', target: '#attendeeDataModal' } %> <br/>
+          <% end %>
+        	<%= form_for @conference, url: { action: 'upload' } do |f| %>
+            <%= f.hidden_field :table, value: 'attendees' %>
+            <%= f.file_field :csv, disabled: disabled %><br/>
+            <% if @conference.attendees.count > 0 %>
+        	    <%= f.submit 'Upload Attendee Data', class: 'btn btn-primary', title: 'Current data will be overriden.', data: { toggle: 'tooltip', placement: 'right' }, disabled: disabled %>
+            <% else %>
+        	    <%= f.submit 'Upload Attendee Data', class: 'btn btn-primary', disabled: disabled %>
+            <% end %>
+        	<% end %>
+          <br/>
+          <%= link_to 'Required Data Format', '#', data: { toggle: 'modal', target: '#attendeeDataFormatModal' } %>
+        </td>
+        <td>
+          <% if @conference.presenters.count > 0 %>
+            <%= link_to 'View Presenter Data', '#', data: { toggle: 'modal', target: '#presenterDataModal' } %> <br/>
+          <% end %>
+        	<%= form_for @conference, url: { action: 'upload' } do |f| %>
+            <%= f.hidden_field :table, value: 'presenters' %>
+            <%= f.file_field :csv, disabled: disabled %><br/>
+            <% if @conference.presenters.count > 0 %>
+        	    <%= f.submit 'Upload Presenter Data', class: 'btn btn-primary', title: 'Current data will be overriden.', data: { toggle: 'tooltip', placement: 'right' }, disabled: disabled %>
+            <% else %>
+        	    <%= f.submit 'Upload Presenter Data', class: 'btn btn-primary', disabled: disabled %>
+            <% end %>
+        	<% end %>
+          <br/>
+          <%= link_to 'Required Data Format', '#', data: { toggle: 'modal', target: '#presenterDataFormatModal' } %>
+        </td>
+    	<% end %>
+    </tr>
+  </table>
+</div>
 
+<div class="well">
+  <table style="width: 100%">
+    <tr>
+      <td>
+      	<%= form_for @conference do |f| %>
+          <% disabled = @conference.step != 1 %>
+          <%= label :date, 'Deadline for presenters:' %><br/>
+          <%= date_select :date, Date.today + 3.days, { order: [:day, :month, :year], disabled: disabled } %><br/><br/>
+      	  <%= f.submit 'Email Presenters', class: 'btn btn-primary', disabled: disabled %>
+      	<% end %>
+      </td>
+      <td style="text-align: center">
+      	<%= form_for @conference do |f| %>
+      	  <%= f.submit 'Email Invitations to Attendees', class: 'btn btn-primary', disabled: @conference.step != 2 %>
+      	<% end %>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="modal fade" id="attendeeDataFormatModal" tabindex="-1" role="dialog" aria-labelledby="attendeeDataFormatModalLabel">
+  <div class="modal-dialog" style="width: 400px" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="attendeeDataFormatModalLabel">Attendee Data Format</h4>
+      </div>
+      <div class="modal-body">
+        A CSV file with the following columns.<br/><br/>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <span class="badge">Required</span>
+            Last Name
+          </li>
+          <li class="list-group-item">
+            <span class="badge">Required</span>
+            First Name
+          </li>
+          <li class="list-group-item">
+            <span class="badge">Required</span>
+            Email
+          </li>
+          <li class="list-group-item">
+            <span class="badge">Required</span>
+            Affiliation
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="presenterDataFormatModal" tabindex="-1" role="dialog" aria-labelledby="presenterDataFormatModalLabel">
+  <div class="modal-dialog" style="width: 400px" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="presenterDataFormatModalLabel">Presenter Data Format</h4>
+      </div>
+      <div class="modal-body">
+        A CSV file with the following columns.<br/><br/>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <span class="badge">Required</span>
+            Last Name
+          </li>
+          <li class="list-group-item">
+            <span class="badge">Required</span>
+            First Name
+          </li>
+          <li class="list-group-item">
+            <span class="badge">Required</span>
+            Email
+          </li>
+          <li class="list-group-item">
+            <span class="badge">Required</span>
+            Affiliation
+          </li>
+          <li class="list-group-item">
+            <span class="badge">Required</span>
+            Poster Title
+          </li>
+          <li class="list-group-item">
+            <span class="badge btn-info">Optional</span>
+            Session
+          </li>
+          <li class="list-group-item">
+            <span class="badge btn-info">Optional</span>
+            Location
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="attendeeDataModal" tabindex="-1" role="dialog" aria-labelledby="attendeeDataModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="attendeeDataModalLabel">Attendee Data</h4>
+      </div>
+      <div class="modal-body">
+    	  <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Last</th>
+              <th>First</th>
+              <th>Email</th>
+              <th>Affiliation</th>
+            </tr>
+          </thead>
+    	    <% @conference.attendees.sort { |a| a.last }.each do |attendee| %>
+    	      <tr>
+    	        <td><%= attendee.last %></td>
+    	        <td><%= attendee.first %></td>
+    	        <td><%= attendee.email %></td>
+    	        <td><%= attendee.affiliation %></td>
+    	      </tr>
+    	    <% end %>
+    	  </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="presenterDataModal" tabindex="-1" role="dialog" aria-labelledby="presenterDataModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="presenterDataModalLabel">presenter Data</h4>
+      </div>
+      <div class="modal-body">
+    	  <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Last</th>
+              <th>First</th>
+              <th>Email</th>
+              <th>Affiliation</th>
+              <th>Title</th>
+              <th>Session</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+    	    <% @conference.presenters.sort { |p| p.last }.each do |presenter| %>
+    	      <tr>
+    	        <td><%= presenter.last %></td>
+    	        <td><%= presenter.first %></td>
+    	        <td><%= presenter.email %></td>
+    	        <td><%= presenter.affiliation %></td>
+    	        <td><%= presenter.title %></td>
+    	        <td><%= presenter.session %></td>
+    	        <td><%= presenter.location %></td>
+    	      </tr>
+    	    <% end %>
+    	  </table>
+      </div>
+    </div>
+  </div>
 </div>

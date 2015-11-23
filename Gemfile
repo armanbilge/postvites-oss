@@ -23,6 +23,10 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+gem 'bootstrap-sass'
+
+gem 'fuzzy_match'
+
 gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations'
 
 gem 'omniauth-google-oauth2'

@@ -55,10 +55,9 @@ ActiveRecord::Schema.define(version: 20151114075534) do
     t.string   "email"
     t.string   "affiliation"
     t.string   "title"
-    t.text     "abstract"
     t.string   "session"
     t.string   "location"
-    t.string   "secret_id"
+    t.string   "secret"
     t.integer  "conference_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false

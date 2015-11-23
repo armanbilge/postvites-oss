@@ -6,10 +6,9 @@ class CreatePresenters < ActiveRecord::Migration
       t.string :email
       t.string :affiliation
       t.string :title
-      t.text :abstract
       t.string :session
       t.string :location
-      t.string :secret_id
+      t.string :secret
       t.references :conference, index: true, foreign_key: true
 
       t.timestamps null: false
