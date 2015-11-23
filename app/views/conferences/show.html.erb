@@ -43,7 +43,7 @@
         <% disabled = @conference.step > 1 %>
         <td>
           <% if @conference.attendees.count > 0 %>
-            <%= link_to 'View Attendee Data', '#', data: { toggle: 'modal', target: '#attendeeDataModal' } %> <br/>
+            <%= link_to 'View Attendee Data', '#', data: { toggle: 'modal', target: '#attendeeDataModal' } %> <br/><br/>
           <% end %>
         	<%= form_for @conference, url: { action: 'upload' } do |f| %>
             <%= f.hidden_field :table, value: 'attendees' %>
@@ -59,7 +59,7 @@
         </td>
         <td>
           <% if @conference.presenters.count > 0 %>
-            <%= link_to 'View Presenter Data', '#', data: { toggle: 'modal', target: '#presenterDataModal' } %> <br/>
+            <%= link_to 'View Presenter Data', '#', data: { toggle: 'modal', target: '#presenterDataModal' } %> <br/><br/>
           <% end %>
         	<%= form_for @conference, url: { action: 'upload' } do |f| %>
             <%= f.hidden_field :table, value: 'presenters' %>
@@ -191,7 +191,7 @@
               <th>Affiliation</th>
             </tr>
           </thead>
-    	    <% @conference.attendees.sort { |a| a.last }.each do |attendee| %>
+    	    <% @conference.attendees.sort_by { |a| a.last }.each do |attendee| %>
     	      <tr>
     	        <td><%= attendee.last %></td>
     	        <td><%= attendee.first %></td>
@@ -225,7 +225,7 @@
               <th>Location</th>
             </tr>
           </thead>
-    	    <% @conference.presenters.sort { |p| p.last }.each do |presenter| %>
+    	    <% @conference.presenters.sort_by { |p| p.last }.each do |presenter| %>
     	      <tr>
     	        <td><%= presenter.last %></td>
     	        <td><%= presenter.first %></td>

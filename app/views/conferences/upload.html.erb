@@ -3,9 +3,8 @@
 <p>Please select the correct column name for each attribute.</p>
 
 <div class="well">
-	<%= form_for @conference, html: { class: 'form-horizontal' } do |f| %>
+	<%= form_for @conference, url: { action: 'import_' + @table }, html: { class: 'form-horizontal' } do |f| %>
 		<fieldset>
-		  <%= f.hidden_field :table, value: @table %>
 		  <%= f.hidden_field :path, value: @path %>
 		  <% fm = FuzzyMatch.new(@headers)%>
 		  <% if @table == 'attendees' %>

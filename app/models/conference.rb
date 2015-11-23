@@ -18,7 +18,7 @@ class Conference < ActiveRecord::Base
     self.attendees.delete_all
     begin
       CSV.foreach(path, headers: true) do |row|
-        self.attendees.create!(mapping.each_pair.map { |k, v| [k, row[v]] }.to_hash)
+        self.attendees.create!(mapping.each_pair.map { |k, v| [k, row[v]] }.to_h)
       end
     rescue Exception => e
       self.attendees.delete_all
@@ -31,7 +31,7 @@ class Conference < ActiveRecord::Base
     self.presenters.delete_all
     begin
       CSV.foreach(path, headers: true) do |row|
-        attributes = mapping.each_pair.map { |k, v| [k, row[v]] }.to_hash
+        attributes = mapping.each_pair.map { |k, v| [k, row[v]] }.to_h
         loop do
           secret = SecureRandom.hex
           break unless Presenter.exists?(secret: secret)

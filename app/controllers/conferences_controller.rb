@@ -84,6 +84,48 @@ class ConferencesController < ApplicationController
     end
   end
 
+  def import_attendees
+    begin
+      @conference = Conference.find(params[:id])
+    rescue
+      flash[:danger] = 'Conference does not exist.'
+      redirect_to conferences_path and return
+    end
+    if @conference.user != current_user
+      flash[:danger] = "You do not have permission to manage conference #{@conference.name}."
+      redirect_to conferences_path and return
+    end
+    begin
+      params = import_attendees_params
+      @conference.import_attendees(params[:path], params.except(:path))
+      flash.now[:info] = 'Imported attendee data.'
+    rescue Exception => e
+      flash[:danger] = e.message
+    end
+    redirect_to @conference
+  end
+
+  def import_presenters
+    begin
+      @conference = Conference.find(params[:id])
+    rescue
+      flash[:danger] = 'Conference does not exist.'
+      redirect_to conferences_path and return
+    end
+    if @conference.user != current_user
+      flash[:danger] = "You do not have permission to manage conference #{@conference.name}."
+      redirect_to conferences_path and return
+    end
+    begin
+      params = import_presenters_params
+      @conference.import_presenters(params[:path], params.except(:path))
+      flash.now[:info] = 'Imported attendee data.'
+    rescue Exception => e
+      flash[:danger] = e.message
+    end
+    redirect_to @conference
+  end
+
   private
 
   def conference_params
@@ -96,6 +138,14 @@ class ConferencesController < ApplicationController
 
   def upload_params
     params.require(:conference).permit(:csv, :table)
+  end
+
+  def import_attendees_params
+    params.require(:conference).permit(:path, :last, :first, :email, :affiliation)
+  end
+
+  def import_presenters_params
+    params.require(:conference).permit(:path, :last, :first, :email, :affiliation, :title, :session, :location)
   end
 
 end
