@@ -32,6 +32,7 @@ class Conference < ActiveRecord::Base
     begin
       CSV.foreach(path, headers: true) do |row|
         attributes = mapping.each_pair.map { |k, v| [k, row[v]] }.to_h
+        secret = nil
         loop do
           secret = SecureRandom.hex
           break unless Presenter.exists?(secret: secret)
