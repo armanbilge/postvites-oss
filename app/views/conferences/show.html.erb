@@ -85,7 +85,7 @@
       	<%= form_for @conference do |f| %>
           <% disabled = @conference.step != 1 %>
           <%= label :date, 'Deadline for presenters:' %><br/>
-          <%= date_select :date, Date.today + 3.days, { order: [:day, :month, :year], disabled: disabled } %><br/><br/>
+          <%= f.date_select :date, { selected: Date.today + 3.days, order: [:day, :month, :year], disabled: disabled } %><br/><br/>
       	  <%= f.submit 'Email Presenters', class: 'btn btn-primary', disabled: disabled %>
       	<% end %>
       </td>
