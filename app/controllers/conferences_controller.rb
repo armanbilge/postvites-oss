@@ -116,13 +116,13 @@ class ConferencesController < ApplicationController
       flash[:danger] = "You do not have permission to manage conference #{@conference.name}."
       redirect_to conferences_path and return
     end
-    # begin
+    begin
       params = import_presenters_params
       @conference.import_presenters(params[:path], params.except(:path))
       flash.now[:info] = 'Imported attendee data.'
-    # rescue Exception => e
-    #   flash[:danger] = e.message
-    # end
+    rescue Exception => e
+      flash[:danger] = e.message
+    end
     redirect_to @conference
   end
 
