@@ -98,7 +98,7 @@ class ConferencesController < ApplicationController
     begin
       params = import_attendees_params
       @conference.import_attendees(params[:path], params.except(:path))
-      flash.now[:info] = 'Imported attendee data.'
+      flash[:info] = 'Imported attendee data.'
     rescue Exception => e
       flash[:danger] = e.message
     end
@@ -119,7 +119,7 @@ class ConferencesController < ApplicationController
     begin
       params = import_presenters_params
       @conference.import_presenters(params[:path], params.except(:path))
-      flash.now[:info] = 'Imported attendee data.'
+      flash[:info] = 'Imported presenter data.'
     rescue Exception => e
       flash[:danger] = e.message
     end
