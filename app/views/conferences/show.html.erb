@@ -85,7 +85,7 @@
       	<%= form_for @conference do |f| %>
           <% disabled = @conference.step != 1 %>
           <%= label :date, 'Deadline for presenters:' %><br/>
-          <%= f.date_select :date, { selected: Date.today + 3.days, order: [:day, :month, :year], disabled: disabled } %><br/><br/>
+          <%= f.date_select :date, { selected: Date.today + 3.days, order: [:day, :month, :year], start_year: Date.today.year, disabled: disabled } %><br/><br/>
       	  <%= f.submit 'Email Presenters', class: 'btn btn-primary', disabled: disabled %>
       	<% end %>
       </td>
@@ -213,27 +213,25 @@
         <h4 class="modal-title" id="presenterDataModalLabel">Presenter Data</h4>
       </div>
       <div class="modal-body">
-    	  <table class="table table-striped table-hover" style="font-size: 8pt">
+    	  <table class="table table-striped table-hover" style="font-size: 10pt">
           <thead>
             <tr>
-              <th>Last</th>
-              <th>First</th>
+              <th>Last, First</th>
               <th>Email</th>
               <th>Affiliation</th>
               <th>Title</th>
-              <th>Session</th>
-              <th>Location</th>
+              <th>Session/<br/>Location</th>
+              <th>Responded?</th>
             </tr>
           </thead>
     	    <% @conference.presenters.sort_by { |p| p.last }.each do |presenter| %>
     	      <tr>
-    	        <td><%= presenter.last %></td>
-    	        <td><%= presenter.first %></td>
+    	        <td><%= presenter.last %>, <%= presenter.first %></td>
     	        <td><%= presenter.email %></td>
     	        <td><%= presenter.affiliation %></td>
     	        <td><%= presenter.title %></td>
-    	        <td><%= presenter.session %></td>
-    	        <td><%= presenter.location %></td>
+    	        <td><%= presenter.session %><br/><%= presenter.location %></td>
+    	        <td><%= link_to presenter.responded? ? 'Yes' : 'No', presenter %></td>
     	      </tr>
     	    <% end %>
     	  </table>

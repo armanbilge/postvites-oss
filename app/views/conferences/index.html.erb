@@ -27,7 +27,7 @@
     <div class="panel-body">
       <%= form_for @conference, validate: true, html: {class: 'form-horizontal'} do |f| %>
       <fieldset>
-        <%= f.text_field :name, onfocus: 'if (this.value == " conference name") this.value = ""', value: ' conference name', style: 'width: 75%' %>
+        <%= f.text_field :name, onfocus: 'if (this.value == " conference name") this.value = ""', onblur: 'if (this.value == "") this.value = " conference name"', value: ' conference name', style: 'width: 75%' %>
         <%= f.submit 'Create', class: 'btn btn-primary' %>
       </fieldset>
       <% end %>

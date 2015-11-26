@@ -1,12 +1,12 @@
 class Conference < ActiveRecord::Base
 
-  validates :name, presence: true
-  validates :invite_limit, numericality: { greater_than_or_equal_to: 1 }
-  validates :poster_limit, numericality: { greater_than_or_equal_to: 1 }
-
   belongs_to :user
   has_many :attendees
   has_many :presenters
+
+  validates :name, presence: true
+  validates :invite_limit, numericality: { greater_than_or_equal_to: 1 }
+  validates :poster_limit, numericality: { greater_than_or_equal_to: 1 }
 
   def step
     [(self.attendees.count > 0 && self.presenters.count > 0), self.presenters_emailed, self.attendees_emailed].count(true)

@@ -3,11 +3,16 @@ Rails.application.routes.draw do
   root 'pages#index'
 
   get '/auth/:provider/callback', to: 'sessions#create'
-  get '/signout', to: 'sessions#destroy', as: 'signout'
+  delete '/signout', to: 'sessions#destroy', as: 'signout'
 
-  resources :conferences
-  patch '/conferences/:id/upload', to: 'conferences#upload'
-  patch '/conferences/:id/import_attendees', to: 'conferences#import_attendees'
-  patch '/conferences/:id/import_presenters', to: 'conferences#import_presenters'
+  resources :conferences do
+    collection do
+      patch :upload
+      patch :import_attendees
+      patch :import_presenters
+    end
+  end
+
+  resources :presenters, path: 'invite', only: [:show, :edit], param: :secret
 
 end

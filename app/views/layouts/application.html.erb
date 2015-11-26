@@ -4,6 +4,7 @@
   <title>postvite</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag :defaults %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= stylesheet_link_tag '//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/simplex/bootstrap.min.css', media: 'all' %>
   <%= csrf_meta_tags %>
@@ -37,7 +38,7 @@
 						<% if current_user.nil? %>
 						<%= link_to 'Sign In', '/auth/google' %>
 						<% else %>
-						<%= link_to 'Sign Out', '/signout' %>
+						<%= link_to 'Sign Out', signout_path, method: :delete %>
 						<% end %>
 					</li>
 	      </ul>
