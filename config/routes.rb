@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   delete '/signout', to: 'sessions#destroy', as: 'signout'
 
   resources :conferences do
-    collection do
+    member do
       patch :upload
       patch :import_attendees
       patch :import_presenters
