@@ -3,12 +3,12 @@
 <table style="width: 100%">
   <tr>
     <td>
-      <div class="well">
+      <div class="well" style="overflow: hidden">
       	<%= form_for @conference, validate: true, html: {class: 'form-horizontal'} do |f| %>
           <% disabled = @conference.step > 1%>
       		<p>Presenters can invite up to <%= f.text_field :invite_limit, size: 2, style: 'text-align: right', disabled: disabled %> attendees.</p>
       	  <p>Attendees can be invited to up to <%= f.text_field :poster_limit, size: 2, style: 'text-align: right', disabled: disabled %> posters.</p>
-      	  <%= f.submit 'Update Limits', class: 'btn btn-primary', disabled: disabled %>
+      	  <%= f.submit 'Update Limits', class: 'btn btn-primary', style: 'float: right', disabled: disabled %>
       	<% end %>
       </div>
     </td>
@@ -37,14 +37,18 @@
 </table>
 
 <div class="well">
+  <legend>1. Upload Data</legend>
   <table style="width: 100%">
     <tr>
       <% begin %>
         <% disabled = @conference.step > 1 %>
         <td>
           <% if @conference.attendees.count > 0 %>
-            <%= link_to 'View Attendee Data', '#', data: { toggle: 'modal', target: '#attendeeDataModal' } %> <br/><br/>
+            <%= link_to 'View Attendee Data', '#', data: { toggle: 'modal', target: '#attendeeDataModal' } %>
+          <% else %>
+            (No attendee data uploaded.)
           <% end %>
+          <br/><br/>
         	<%= form_for @conference, url: { action: 'upload' } do |f| %>
             <%= f.hidden_field :table, value: 'attendees' %>
             <%= f.file_field :csv, disabled: disabled %><br/>
@@ -59,8 +63,11 @@
         </td>
         <td>
           <% if @conference.presenters.count > 0 %>
-            <%= link_to 'View Presenter Data', '#', data: { toggle: 'modal', target: '#presenterDataModal' } %> <br/><br/>
+            <%= link_to 'View Presenter Data', '#', data: { toggle: 'modal', target: '#presenterDataModal' } %>
+          <% else %>
+            (No presenter data uploaded.)
           <% end %>
+          <br/><br/>
         	<%= form_for @conference, url: { action: 'upload' } do |f| %>
             <%= f.hidden_field :table, value: 'presenters' %>
             <%= f.file_field :csv, disabled: disabled %><br/>
@@ -78,25 +85,87 @@
   </table>
 </div>
 
-<div class="well">
-  <table style="width: 100%">
-    <tr>
-      <td>
-      	<%= form_for @conference do |f| %>
+<table style="width: 100%">
+  <tr>
+    <td style="width: 50%">
+      <div class="well">
+        <legend>2. Email Presenters</legend>
+      	<%= form_for @conference, url: { action: 'email_presenters' }, html: { class: 'form' } do |f| %>
           <% disabled = @conference.step != 1 %>
-          <%= label :date, 'Deadline for presenters:' %><br/>
-          <%= f.date_select :date, { selected: Date.today + 3.days, order: [:day, :month, :year], start_year: Date.today.year, disabled: disabled } %><br/><br/>
-      	  <%= f.submit 'Email Presenters', class: 'btn btn-primary', disabled: disabled %>
+          <fieldset>
+  					<div class="form-group">
+              <%= label :email, :subject, 'Subject:', class: 'control-label' %>
+              <%= text_field :email, :subject, value: "Invite attendees to your poster at #{@conference.name}", class: 'form-control', disabled: disabled %>
+            </div>
+
+            <%= label :email, :message, 'Message:', class: 'control-label' %>
+  					<div class="form-group panel panel-default">
+              <div class="panel-body">
+                <p>Dear [<i>presenter name</i>],</p>
+
+                <p><%= text_area :email, :message, class: 'form-control', disabled: disabled %></p>
+
+                <p>
+                  You may select attendees to invite at the following link.<br/>
+                  <a>[<i>link</i>]</a>
+                </p>
+
+                <p>
+                  Please submit your selections by <br/>
+                  <%= date_select :email, :date, { selected: Date.today + 3.days, order: [:day, :month, :year], start_year: Date.today.year, disabled: disabled }, { class: 'form-control', style: 'display: inline-block; width: auto; vertical-align: middle' } %>.
+                </p>
+
+                <p>
+                  Cheers,<br/>
+                  postvite, the poster invitation system<br/>
+                  <%= link_to root_url, root_path %>
+                </p>
+              </div>
+            </div>
+        	  <%= f.submit 'Send', class: 'btn btn-primary', style: 'float: right', disabled: disabled %>
+          </fieldset>
       	<% end %>
-      </td>
-      <td style="text-align: center">
-      	<%= form_for @conference do |f| %>
-      	  <%= f.submit 'Email Invitations to Attendees', class: 'btn btn-primary', disabled: @conference.step != 2 %>
+      </div>
+    </td>
+    <td>
+      <div style="width: 16px">
+    </td>
+    <td style="width: 50%">
+      <div class="well" style="height: 100%; position: relative">
+        <legend>3. Email Invitations</legend>
+      	<%= form_for @conference, url: { action: 'email_attendees' }, html: { class: 'form' } do |f| %>
+          <% disabled = @conference.step != 2 %>
+          <fieldset>
+  					<div class="form-group">
+              <%= label :email, :subject, 'Subject:', class: 'control-label' %>
+              <%= text_field :email, :subject, value: "You are invited to a poster at #{@conference.name}", class: 'form-control', disabled: disabled %>
+            </div>
+
+            <%= label :email, :message, 'Message:', class: 'control-label' %>
+  					<div class="form-group panel panel-default">
+              <div class="panel-body">
+                <p>Dear [<i>attendee name</i>],</p>
+
+                <p><%= text_area :email, :message, rows: 5, class: 'form-control', disabled: disabled %></p>
+
+                <p>Please find details of the poster(s) you are invited to view below.</p>
+
+                <p>[<i>poster details</i>]</p>
+
+                <p>
+                  Cheers,<br/>
+                  postvite, the poster invitation system<br/>
+                  <%= link_to root_url, root_path %>
+                </p>
+              </div>
+            </div>
+        	  <%= f.submit 'Send', class: 'btn btn-primary', style: 'float: right', disabled: disabled %>
+          </fieldset>
       	<% end %>
-      </td>
-    </tr>
-  </table>
-</div>
+      </div>
+    </td>
+  </tr>
+</table>
 
 <div class="modal fade" id="attendeeDataFormatModal" tabindex="-1" role="dialog" aria-labelledby="attendeeDataFormatModalLabel">
   <div class="modal-dialog" style="width: 400px" role="document">

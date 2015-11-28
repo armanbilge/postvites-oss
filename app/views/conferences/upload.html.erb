@@ -20,7 +20,8 @@
 					<div class="form-group">
 				    <%= f.label a, n, class: 'col-md-2 control-label' %>
 						<div class="col-md-10" style="width: 25%">
-					    <%= f.collection_select a, @headers + (cls.validators_on(a).any? { |v| v.is_a?(ActiveModel::Validations::PresenceValidator) } ? [] : ['n/a']), :to_s, :to_s, { selected: fm.find(a.to_s) }, { class: 'form-control' } %>
+              <% optional = cls.validators_on(a).any? { |v| v.is_a?(ActiveModel::Validations::PresenceValidator) } %>
+					    <%= f.collection_select a, @headers + (optional ? [] : ['n/a']), :to_s, :to_s, { selected: fm.find(a.to_s, must_match_at_least_one_word: !optional) || 'n/a' }, { class: 'form-control' } %>
 						</div>
 					</div>
 				<br/>

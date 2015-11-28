@@ -10,9 +10,11 @@ Rails.application.routes.draw do
       patch :upload
       patch :import_attendees
       patch :import_presenters
+      post :email_presenters
+      post :email_attendees
     end
   end
 
-  resources :presenters, path: 'invite', only: [:show, :edit], param: :secret
+  resources :presenters, path: 'invite', only: [:show, :update], param: :secret
 
 end

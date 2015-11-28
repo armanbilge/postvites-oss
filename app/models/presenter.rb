@@ -1,7 +1,8 @@
 class Presenter < ActiveRecord::Base
 
   belongs_to :conference
-  has_and_belongs_to_many :attendees
+  has_many :invitations
+  has_many :attendees, through: :invitations
 
   validates :last, presence: true
   validates :first, presence: true
@@ -9,12 +10,6 @@ class Presenter < ActiveRecord::Base
   validates :affiliation, presence: true
   validates :title, presence: true
   validates :secret, presence: true, uniqueness: true
-
-  def validate
-    if attendees.length > conference.invite_limit
-      errors.add_to_base("You cannot invite anymore attendees.")
-    end
-  end
 
   def responded?
     attendees.length > 0

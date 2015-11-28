@@ -12,24 +12,25 @@ class Conference < ActiveRecord::Base
     [(self.attendees.count > 0 && self.presenters.count > 0), self.presenters_emailed, self.attendees_emailed].count(true)
   end
 
+  def available_attendees
+    attendees.joins('left join invitations on attendees.id = invitations.attendee_id').group('attendees.id').having("count(attendee_id) < #{poster_limit}")
+  end
+
   require 'csv'
 
   def import_attendees(path, mapping)
-    self.attendees.delete_all
-    begin
+    Conference.transaction do
+      self.attendees.delete_all
       CSV.foreach(path, headers: true) do |row|
         self.attendees.create!(mapping.each_pair.map { |k, v| [k, row[v]] }.to_h)
       end
-    rescue Exception => e
-      self.attendees.delete_all
-      raise e
     end
   end
 
   def import_presenters(path, mapping)
     require 'securerandom'
-    self.presenters.delete_all
-    begin
+    Conference.transaction do
+      self.presenters.delete_all
       CSV.foreach(path, headers: true) do |row|
         attributes = mapping.each_pair.map { |k, v| [k, row[v]] }.to_h
         secret = nil
@@ -40,9 +41,6 @@ class Conference < ActiveRecord::Base
         attributes[:secret] = secret
         self.presenters.create!(attributes)
       end
-    rescue Exception => e
-      self.presenters.delete_all
-      raise e
     end
   end
 

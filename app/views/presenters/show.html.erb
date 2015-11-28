@@ -1,6 +1,43 @@
+<%= javascript_tag do %>
+  window.invite_limit = <%= @presenter.conference.invite_limit %>;
+<% end %>
+
 <h1>Invite Attendees</h1>
 
-<div class="well">
-  <legend>Poster: "<%= @presenter.title %>"</legend>
+<% if @presenter.conference.step == 1 %>
 
-</div>
+  <p>You may invite up to <%= pluralize(@presenter.conference.invite_limit, 'conference attendee') %> to your poster, "<%= @presenter.title %>".</p>
+
+  <%= form_for @presenter, html: { class: 'form' } do |f| %>
+    <table style="width: 100%">
+      <tr>
+        <td style="width: 46%">
+          <div class="form-group">
+            <%= label nil, nil, 'Available Attendees', class: 'control-label' %>
+            <%= collection_select nil, nil, @presenter.conference.available_attendees, :id, :vital, {}, { id: 'multiselect', class: 'form-control', multiple: true, size: 20, style: 'padding-right: 0' } %>
+          </div>
+        </td>
+        <td>
+          <div style="text-align: center">
+            <button type="button" id="multiselect_rightSelected" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon glyphicon-forward" aria-hidden="true"></span></button> <br/><br/>
+            <button type="button" id="multiselect_leftSelected" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp;</button>
+          </div>
+        </td>
+        <td style="width: 46%">
+          <fieldset>
+            <div class="form-group">
+              <%= f.label :attendee_ids, 'I am inviting...', class: 'control-label' %>
+              <%= f.collection_select :attendee_ids, @presenter.attendees, :id, :vital, { include_hidden: true }, { id: 'multiselect_to', class: 'form-control', multiple: true, size: 20, style: 'padding-right: 0' } %>
+            </div>
+          </fieldset>
+        </td>
+      </tr>
+    </table>
+	  <%= f.submit 'Save', class: 'btn btn-primary', style: 'float: right' %>
+  <% end %>
+
+<% else %>
+
+  <p>Sorry, you cannot currently invite anyone to your poster!</p>
+
+<% end %>

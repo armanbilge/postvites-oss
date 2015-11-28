@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151114075534) do
+ActiveRecord::Schema.define(version: 20151128054520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,14 +28,6 @@ ActiveRecord::Schema.define(version: 20151114075534) do
 
   add_index "attendees", ["conference_id"], name: "index_attendees_on_conference_id", using: :btree
 
-  create_table "attendees_presenters", id: false, force: :cascade do |t|
-    t.integer "attendee_id"
-    t.integer "presenter_id"
-  end
-
-  add_index "attendees_presenters", ["attendee_id"], name: "index_attendees_presenters_on_attendee_id", using: :btree
-  add_index "attendees_presenters", ["presenter_id"], name: "index_attendees_presenters_on_presenter_id", using: :btree
-
   create_table "conferences", force: :cascade do |t|
     t.string   "name"
     t.integer  "invite_limit",       default: 3
@@ -48,6 +40,16 @@ ActiveRecord::Schema.define(version: 20151114075534) do
   end
 
   add_index "conferences", ["user_id"], name: "index_conferences_on_user_id", using: :btree
+
+  create_table "invitations", force: :cascade do |t|
+    t.integer  "attendee_id"
+    t.integer  "presenter_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "invitations", ["attendee_id"], name: "index_invitations_on_attendee_id", using: :btree
+  add_index "invitations", ["presenter_id"], name: "index_invitations_on_presenter_id", using: :btree
 
   create_table "presenters", force: :cascade do |t|
     t.string   "last"
@@ -75,5 +77,7 @@ ActiveRecord::Schema.define(version: 20151114075534) do
 
   add_foreign_key "attendees", "conferences"
   add_foreign_key "conferences", "users"
+  add_foreign_key "invitations", "attendees"
+  add_foreign_key "invitations", "presenters"
   add_foreign_key "presenters", "conferences"
 end

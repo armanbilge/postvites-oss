@@ -38,7 +38,7 @@ class ConferencesController < ApplicationController
       redirect_to conferences_path and return
     end
     if @conference.user != current_user
-      flash[:danger] = "You do not have permission to manage conference #{@conference.name}."
+      flash[:danger] = 'Conference does not exist.'
       redirect_to conferences_path and return
     end
     begin
@@ -58,7 +58,7 @@ class ConferencesController < ApplicationController
       redirect_to conferences_path and return
     end
     if @conference.user != current_user
-      flash[:danger] = "You do not have permission to manage conference #{@conference.name}."
+      flash[:danger] = 'Conference does not exist.'
       redirect_to conferences_path and return
     end
     begin
@@ -92,7 +92,7 @@ class ConferencesController < ApplicationController
       redirect_to conferences_path and return
     end
     if @conference.user != current_user
-      flash[:danger] = "You do not have permission to manage conference #{@conference.name}."
+      flash[:danger] = 'Conference does not exist.'
       redirect_to conferences_path and return
     end
     begin
@@ -113,7 +113,7 @@ class ConferencesController < ApplicationController
       redirect_to conferences_path and return
     end
     if @conference.user != current_user
-      flash[:danger] = "You do not have permission to manage conference #{@conference.name}."
+      flash[:danger] = 'Conference does not exist.'
       redirect_to conferences_path and return
     end
     begin
