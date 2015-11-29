@@ -4,7 +4,7 @@
 
 <h1>Invite Attendees</h1>
 
-<% if @presenter.conference.step == 1 %>
+<% if @presenter.conference.step == 2 %>
 
   <p>You may invite up to <%= pluralize(@presenter.conference.invite_limit, 'conference attendee') %> to your poster, "<%= @presenter.title %>".</p>
 

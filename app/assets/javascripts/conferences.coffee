@@ -7,3 +7,6 @@ ready = ->
 
 $(document).ready(ready)
 $(document).on('page:load', ready)
+
+root = exports ? this
+root.showProgress = -> $('#progress').show()

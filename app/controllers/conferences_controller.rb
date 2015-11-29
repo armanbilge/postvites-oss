@@ -126,6 +126,65 @@ class ConferencesController < ApplicationController
     redirect_to @conference
   end
 
+  def email_presenters
+    begin
+      @conference = Conference.find(params[:id])
+    rescue
+      flash[:danger] = 'Conference does not exist.'
+      redirect_to conferences_path and return
+    end
+    if @conference.user != current_user
+      flash[:danger] = 'Conference does not exist.'
+      redirect_to conferences_path and return
+    end
+    if @conference.presenters_emailed?
+      flash[:danger] = 'Presenters have already been emailed.'
+      redirect_to conferences_path and return
+    end
+    begin
+      @conference.update!(presenters_emailed: true)
+      params = email_presenters_params
+      deadline = Date.new(params['deadline(1i)'].to_i, params['deadline(2i)'].to_i, params['deadline(3i)'].to_i)
+      @conference.presenters.each do |p|
+        Notifier.request_selections(p, params[:subject], params[:message], deadline).deliver_now
+      end
+      flash[:info] = 'Emailed presenters.'
+    rescue Exception => e
+      @conference.update!(presenters_emailed: false)
+      flash[:danger] = e.message
+    end
+    redirect_to @conference
+  end
+
+  def email_attendees
+    begin
+      @conference = Conference.find(params[:id])
+    rescue
+      flash[:danger] = 'Conference does not exist.'
+      redirect_to conferences_path and return
+    end
+    if @conference.user != current_user
+      flash[:danger] = 'Conference does not exist.'
+      redirect_to conferences_path and return
+    end
+    if @conference.attendees_emailed?
+      flash[:danger] = 'Invitations have already been sent'
+      redirect_to conferences_path and return
+    end
+    begin
+      redirect_to @conference
+      @conference.update!(attendees_emailed: true)
+      params = email_attendees_params
+      @conference.attendees.each do |a|
+        Notifier.invite(a, params[:subject], params[:message]).deliver_now unless a.presenters.count == 0
+      end
+      flash[:info] = 'Emailed invitations to attendees.'
+    rescue Exception => e
+      @conference.update!(attendees_emailed: false)
+      flash[:danger] = e.message
+    end
+  end
+
   private
 
   def conference_params
@@ -146,6 +205,14 @@ class ConferencesController < ApplicationController
 
   def import_presenters_params
     params.require(:conference).permit(:path, :last, :first, :email, :affiliation, :title, :session, :location)
+  end
+
+  def email_presenters_params
+    params.require(:email).permit(:subject, :message, 'deadline(1i)', 'deadline(2i)', 'deadline(3i)')
+  end
+
+  def email_attendees_params
+    params.require(:email).permit(:subject, :message)
   end
 
 end

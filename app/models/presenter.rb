@@ -11,6 +11,10 @@ class Presenter < ActiveRecord::Base
   validates :title, presence: true
   validates :secret, presence: true, uniqueness: true
 
+  def vital
+    "#{last}, #{first} (#{affiliation})"
+  end
+
   def responded?
     attendees.length > 0
   end

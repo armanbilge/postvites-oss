@@ -4,7 +4,7 @@
   <tr>
     <td>
       <div class="well" style="overflow: hidden">
-      	<%= form_for @conference, validate: true, html: {class: 'form-horizontal'} do |f| %>
+      	<%= form_for @conference, validate: true, html: {class: 'form-inline'} do |f| %>
           <% disabled = @conference.step > 1%>
       		<p>Presenters can invite up to <%= f.text_field :invite_limit, size: 2, style: 'text-align: right', disabled: disabled %> attendees.</p>
       	  <p>Attendees can be invited to up to <%= f.text_field :poster_limit, size: 2, style: 'text-align: right', disabled: disabled %> posters.</p>
@@ -90,7 +90,7 @@
     <td style="width: 50%">
       <div class="well">
         <legend>2. Email Presenters</legend>
-      	<%= form_for @conference, url: { action: 'email_presenters' }, html: { class: 'form' } do |f| %>
+      	<%= form_for @conference, url: { action: 'email_presenters' }, method: :post, html: { class: 'form' } do |f| %>
           <% disabled = @conference.step != 1 %>
           <fieldset>
   					<div class="form-group">
@@ -103,7 +103,7 @@
               <div class="panel-body">
                 <p>Dear [<i>presenter name</i>],</p>
 
-                <p><%= text_area :email, :message, class: 'form-control', disabled: disabled %></p>
+                <p><%= text_area :email, :message, value: "As a poster-presenter at #{@conference.name}, you have the opportunity to personally invite up to #{pluralize(@conference.invite_limit, 'conference attendee')} to visit your poster. Each attendee can receive a maximum of #{pluralize(@conference.poster_limit, 'invitation')} on a first come, first served basis, so don't be late to make your selections!", rows: 7, class: 'form-control', disabled: disabled %></p>
 
                 <p>
                   You may select attendees to invite at the following link.<br/>
@@ -112,7 +112,7 @@
 
                 <p>
                   Please submit your selections by <br/>
-                  <%= date_select :email, :date, { selected: Date.today + 3.days, order: [:day, :month, :year], start_year: Date.today.year, disabled: disabled }, { class: 'form-control', style: 'display: inline-block; width: auto; vertical-align: middle' } %>.
+                  <%= date_select :email, :deadline, { selected: Date.today + 3.days, order: [:month, :day, :year], start_year: Date.today.year, disabled: disabled }, { class: 'form-control', style: 'display: inline-block; width: auto; vertical-align: middle' } %>.
                 </p>
 
                 <p>
@@ -125,6 +125,12 @@
         	  <%= f.submit 'Send', class: 'btn btn-primary', style: 'float: right', disabled: disabled %>
           </fieldset>
       	<% end %>
+        <div id="email-presenters-progress-bar" style="display: none">
+          <br/>
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%"/>
+          </div>
+        </div>
       </div>
     </td>
     <td>
@@ -133,7 +139,7 @@
     <td style="width: 50%">
       <div class="well" style="height: 100%; position: relative">
         <legend>3. Email Invitations</legend>
-      	<%= form_for @conference, url: { action: 'email_attendees' }, html: { class: 'form' } do |f| %>
+      	<%= form_for @conference, url: { action: 'email_attendees'}, method: :post, html: { class: 'form' } do |f| %>
           <% disabled = @conference.step != 2 %>
           <fieldset>
   					<div class="form-group">
@@ -146,9 +152,9 @@
               <div class="panel-body">
                 <p>Dear [<i>attendee name</i>],</p>
 
-                <p><%= text_area :email, :message, rows: 5, class: 'form-control', disabled: disabled %></p>
+                <p><%= text_area :email, :message, value: "We recently gave all poster-presenters at #{@conference.name} the opportunity to personally invite up to #{pluralize(@conference.invite_limit, 'conference attendee')} to visit their poster. We are pleased to inform you that you have received an invitation!", rows: 10, class: 'form-control', disabled: disabled %></p>
 
-                <p>Please find details of the poster(s) you are invited to view below.</p>
+                <p>Please find details of the poster(s) that you are invited to view below.</p>
 
                 <p>[<i>poster details</i>]</p>
 
@@ -166,6 +172,10 @@
     </td>
   </tr>
 </table>
+
+<div id="progress" class="progress" style="display: none">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 100%"/>
+</div>
 
 <div class="modal fade" id="attendeeDataFormatModal" tabindex="-1" role="dialog" aria-labelledby="attendeeDataFormatModalLabel">
   <div class="modal-dialog" style="width: 400px" role="document">

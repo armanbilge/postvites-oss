@@ -17,4 +17,6 @@ Rails.application.routes.draw do
 
   resources :presenters, path: 'invite', only: [:show, :update], param: :secret
 
+  default_url_options host: ENV['HOSTNAME']
+
 end

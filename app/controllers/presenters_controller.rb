@@ -15,6 +15,8 @@ class PresentersController < ApplicationController
     redirect_to @presenter
   end
 
+  private
+
   def update_params
     params.require(:presenter).permit(attendee_ids: [])
   end
