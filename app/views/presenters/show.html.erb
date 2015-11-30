@@ -27,7 +27,7 @@
           <fieldset>
             <div class="form-group">
               <%= f.label :attendee_ids, 'I am inviting...', class: 'control-label' %>
-              <%= f.collection_select :attendee_ids, @presenter.attendees, :id, :vital, { include_hidden: true }, { id: 'multiselect_to', class: 'form-control', multiple: true, size: 20, style: 'padding-right: 0' } %>
+              <%= f.collection_select :attendee_ids, @presenter.attendees, :id, :vital, { selected: nil, include_hidden: true }, { id: 'multiselect_to', class: 'form-control', multiple: true, size: 20, style: 'padding-right: 0' } %>
             </div>
           </fieldset>
         </td>
