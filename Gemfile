@@ -27,8 +27,6 @@ gem 'bootstrap-sass'
 
 gem 'fuzzy_match'
 
-gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations'
-
 gem 'omniauth-google-oauth2'
 
 # Use ActiveModel has_secure_password
