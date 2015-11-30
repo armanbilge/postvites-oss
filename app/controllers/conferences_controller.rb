@@ -142,9 +142,13 @@ class ConferencesController < ApplicationController
       redirect_to conferences_path and return
     end
     begin
-      @conference.update!(presenters_emailed: true)
       params = email_presenters_params
       deadline = Date.new(params['deadline(1i)'].to_i, params['deadline(2i)'].to_i, params['deadline(3i)'].to_i)
+      if deadline < Date.today - 1
+        flash[:danger] = 'Presenter deadline must be in the future.'
+        redirect_to @conference and return
+      end
+      @conference.update!(presenters_emailed: true)
       @conference.presenters.each do |p|
         Notifier.request_selections(p, params[:subject], params[:message], deadline).deliver_now
       end
