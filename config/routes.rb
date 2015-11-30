@@ -2,6 +2,9 @@ Rails.application.routes.draw do
 
   root 'pages#index'
 
+  get '/contact', to: 'pages#contact'
+  post '/contact', to: 'pages#send_message'
+
   get '/auth/:provider/callback', to: 'sessions#create'
   delete '/signout', to: 'sessions#destroy', as: 'signout'
 
