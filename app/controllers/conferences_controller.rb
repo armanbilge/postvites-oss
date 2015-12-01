@@ -74,7 +74,7 @@ class ConferencesController < ApplicationController
 
       require 'csv'
       @path = csv.path
-      @headers = CSV.foreach(@path).next
+      @headers = CSV.open(@path) { |csv| csv.first }
 
       flash.now[:info] = 'Uploaded CSV file.'
 
