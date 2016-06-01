@@ -12,8 +12,8 @@
 				<% field_names = ['Last Name', 'First Name', 'Email', 'Affiliation'] %>
 				<% cls = Attendee %>
 		  <% else %>
-		    <% fields = [:last, :first, :email, :affiliation, :title, :session, :location] %>
-				<% field_names = ['Last Name', 'First Name', 'Email', 'Affiliation', 'Poster Title', 'Session', 'Location'] %>
+		    <% fields = [:last, :first, :email, :affiliation, :title, :session, :location, :number, :abstract] %>
+				<% field_names = ['Last Name', 'First Name', 'Email', 'Affiliation', 'Poster Title', 'Session', 'Location', 'Number', 'Abstract'] %>
 				<% cls = Presenter %>
 		  <% end %>
 		  <% fields.zip(field_names).each do |a, n| %>

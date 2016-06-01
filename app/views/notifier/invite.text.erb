@@ -8,5 +8,8 @@ Please find details of the <%= 'poster'.pluralize(@recipient.presenters.count) %
 <%= "Affiliation: #{p.affiliation}" %>
 <%= "Session:     #{p.session}\n" unless p.session.nil? -%>
 <%= "Location:    #{p.location}\n" unless p.location.nil? -%>
+<%= "Number:      #{p.number}\n" unless p.number.nil? -%>
+<%= "Abstract:\n" unless p.abstract.nil? -%>
+<%= "#{p.abstract}\n" unless p.abstract.nil? -%>
 
 <% end %>

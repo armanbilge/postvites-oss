@@ -243,6 +243,14 @@
             <span class="badge btn-info">Optional</span>
             Location
           </li>
+          <li class="list-group-item">
+            <span class="badge btn-info">Optional</span>
+            Number
+          </li>
+          <li class="list-group-item">
+            <span class="badge btn-info">Optional</span>
+            Abstract
+          </li>
         </ul>
       </div>
     </div>
@@ -295,7 +303,6 @@
               <th>Email</th>
               <th>Affiliation</th>
               <th>Title</th>
-              <th>Session/<br/>Location</th>
               <th>Responded?</th>
             </tr>
           </thead>
@@ -305,7 +312,6 @@
     	        <td><%= presenter.email %></td>
     	        <td><%= presenter.affiliation %></td>
     	        <td><%= presenter.title %></td>
-    	        <td><%= presenter.session %><br/><%= presenter.location %></td>
     	        <td><%= link_to presenter.responded? ? 'Yes' : 'No', presenter %></td>
     	      </tr>
     	    <% end %>
