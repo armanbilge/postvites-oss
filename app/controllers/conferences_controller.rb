@@ -148,7 +148,7 @@ class ConferencesController < ApplicationController
         flash[:danger] = 'Presenter deadline must be in the future.'
         redirect_to @conference and return
       end
-      @conference.update!(presenters_emailed: true)
+      @conference.update!(deadline: deadline, presenters_emailed: true)
       @conference.presenters.each do |p|
         Notifier.request_selections(p, params[:subject], params[:message], deadline).deliver_now
       end
