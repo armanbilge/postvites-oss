@@ -2,6 +2,29 @@
 
 <table style="width: 100%">
   <tr>
+    <%= form_for @conference, validate: true, html: {class: 'form'} do |f| %>
+    <fieldset>
+        <div class='container'>
+          <div class='row'>
+            <div class='form-group col-xs-9'>
+              <%= f.label :logo_url, 'Conference Logo URL: ' , class: 'control-label' %>
+              <%= f.text_field :logo_url, class:'form-control'%>
+            </div>
+            <div class = 'col-xs-3'>
+              <%=
+              if @conference.logo_url.blank?
+                'no image available'
+              else
+                image_tag(@conference.logo_url, :size => "150x150")
+              end %>
+            </div>
+          </div>
+        </div>
+        <%= f.submit 'Upload logo', class: 'btn btn-primary', style: 'float: right'%>
+      </fieldset>
+    <% end %>
+  </tr>
+  <tr>
     <td>
       <div class="well" style="overflow: hidden">
       	<%= form_for @conference, validate: true, html: {class: 'form-inline'} do |f| %>

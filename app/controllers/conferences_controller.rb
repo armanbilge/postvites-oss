@@ -1,4 +1,14 @@
 class ConferencesController < ApplicationController
+  # extend ActiveModel::Callbacks
+  # include ActiveModel::Validations
+  # include ActiveModel::Validations::Callbacks
+
+  # before_validation :before_val
+  # def before_val(model)
+  #   # model.attributes.each_value { |v| v.strip! if v.respond_to? :strip! }
+  #   # true
+  #   puts 'pineapple'
+  # end
 
   def index
     if current_user.nil?
@@ -42,8 +52,13 @@ class ConferencesController < ApplicationController
       redirect_to conferences_path and return
     end
     begin
+      # params[:conference][:logo_url]
       @conference.update!(update_params)
-      flash[:info] = 'Limits updated.'
+      if @conference.logo_url
+        flash[:info] = 'Logo updated!'
+      else
+        flash[:info] = 'Conference information updated.'
+      end
     rescue Exception => e
       flash[:danger] = e.message
     end
@@ -196,7 +211,7 @@ class ConferencesController < ApplicationController
   end
 
   def update_params
-    params.require(:conference).permit(:invite_limit, :poster_limit)
+    params.require(:conference).permit(:invite_limit, :poster_limit, :logo_url)
   end
 
   def upload_params
