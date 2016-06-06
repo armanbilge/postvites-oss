@@ -5,6 +5,7 @@ class Conference < ActiveRecord::Base
   has_many :presenters
 
   validates :name, presence: true
+  validates :email, :allow_blank => true, format: { with: /@/, on: :create }
   validates :invite_limit, numericality: { greater_than_or_equal_to: 1 }
   validates :poster_limit, numericality: { greater_than_or_equal_to: 1 }
 

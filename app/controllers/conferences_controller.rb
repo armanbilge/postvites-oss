@@ -43,7 +43,7 @@ class ConferencesController < ApplicationController
     end
     begin
       @conference.update!(update_params)
-      flash[:info] = 'Limits updated.'
+      flash[:info] = 'Changes saved.'
     rescue Exception => e
       flash[:danger] = e.message
     end
@@ -196,7 +196,7 @@ class ConferencesController < ApplicationController
   end
 
   def update_params
-    params.require(:conference).permit(:invite_limit, :poster_limit)
+    params.require(:conference).permit(:invite_limit, :poster_limit, :email)
   end
 
   def upload_params

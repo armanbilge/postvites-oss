@@ -85,6 +85,22 @@
   </table>
 </div>
 
+<div class="well" style="overflow: hidden">
+  <table style="width: 100%">
+    <tr>
+      <td>
+    		<p>If an address is provided, it is cc'ed on all emails.</p>
+      </td>
+      <td style="text-align: right">
+      	<%= form_for @conference, validate: true, html: {class: 'form'} do |f| %>
+          <%= f.email_field :email, placeholder: ' email cc disabled' %> &nbsp;
+      	  <%= f.submit 'Update Email', class: 'btn btn-primary', style: 'float: right' %>
+      	<% end %>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <table style="width: 100%">
   <tr>
     <td style="width: 50%">
