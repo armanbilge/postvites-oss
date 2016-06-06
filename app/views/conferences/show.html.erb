@@ -264,22 +264,20 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="attendeeDataModalLabel">Attendee Data</h4>
       </div>
-      <div class="modal-body" style="font-size: 10pt">
+      <div class="modal-body" style="font-size: 10pt; table-layout: fixed">
     	  <table class="table table-striped table-hover">
           <thead>
             <tr>
               <th>Last</th>
               <th>First</th>
               <th>Email</th>
-              <th>Affiliation</th>
             </tr>
           </thead>
     	    <% @conference.attendees.sort_by { |a| a.last }.each do |attendee| %>
     	      <tr>
     	        <td><%= attendee.last %></td>
     	        <td><%= attendee.first %></td>
-    	        <td><%= attendee.email %></td>
-    	        <td><%= attendee.affiliation %></td>
+    	        <td style="word-wrap: break-word"><%= attendee.email %></td>
     	      </tr>
     	    <% end %>
     	  </table>
@@ -296,12 +294,11 @@
         <h4 class="modal-title" id="presenterDataModalLabel">Presenter Data</h4>
       </div>
       <div class="modal-body">
-    	  <table class="table table-striped table-hover" style="font-size: 10pt">
+    	  <table class="table table-striped table-hover" style="font-size: 10pt; table-layout: fixed">
           <thead>
             <tr>
               <th>Last, First</th>
               <th>Email</th>
-              <th>Affiliation</th>
               <th>Title</th>
               <th>Responded?</th>
             </tr>
@@ -309,8 +306,7 @@
     	    <% @conference.presenters.sort_by { |p| p.last }.each do |presenter| %>
     	      <tr>
     	        <td><%= presenter.last %>, <%= presenter.first %></td>
-    	        <td><%= presenter.email %></td>
-    	        <td><%= presenter.affiliation %></td>
+    	        <td style="word-wrap: break-word"><%= presenter.email %></td>
     	        <td><%= presenter.title %></td>
     	        <td><%= link_to presenter.responded? ? 'Yes' : 'No', presenter %></td>
     	      </tr>
