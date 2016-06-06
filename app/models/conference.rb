@@ -17,11 +17,12 @@ class Conference < ActiveRecord::Base
   end
 
   require 'csv'
+  require 'charlock_holmes'
 
   def import_attendees(path, mapping)
     Conference.transaction do
       self.attendees.delete_all
-      CSV.foreach(path, headers: true) do |row|
+      CSV.foreach(path, headers: true, encoding: CharlockHolmes::EncodingDetector.detect(File.read(path))[:encoding]) do |row|
         self.attendees.create!(mapping.each_pair.map { |k, v| [k, row[v]] }.to_h)
       end
     end
@@ -31,7 +32,7 @@ class Conference < ActiveRecord::Base
     require 'securerandom'
     Conference.transaction do
       self.presenters.delete_all
-      CSV.foreach(path, headers: true) do |row|
+      CSV.foreach(path, headers: true, encoding: CharlockHolmes::EncodingDetector.detect(File.read(path))[:encoding]) do |row|
         attributes = mapping.each_pair.map { |k, v| [k, row[v]] }.to_h
         secret = nil
         loop do

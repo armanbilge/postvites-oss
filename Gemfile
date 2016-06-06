@@ -25,6 +25,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'bootstrap-sass'
 
+gem 'charlock_holmes'
+
 gem 'fuzzy_match'
 
 gem 'omniauth-google-oauth2'
