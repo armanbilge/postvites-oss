@@ -97,8 +97,10 @@ class ConferencesController < ApplicationController
     end
     begin
       params = import_attendees_params
-      @conference.import_attendees(params[:path], params.except(:path))
-      flash[:info] = 'Imported attendee data.'
+      File.open(params[:path], 'rb') do |f|
+        @conference.import_attendees(f.read, params.except(:path))
+      end
+      flash[:info] = 'Importing attendee data.'
     rescue Exception => e
       flash[:danger] = e.message
     end
@@ -118,8 +120,10 @@ class ConferencesController < ApplicationController
     end
     begin
       params = import_presenters_params
-      @conference.import_presenters(params[:path], params.except(:path))
-      flash[:info] = 'Imported presenter data.'
+      File.open(params[:path], 'rb') do |f|
+        @conference.import_presenters(f.read, params.except(:path))
+      end
+      flash[:info] = 'Importing presenter data.'
     rescue Exception => e
       flash[:danger] = e.message
     end
@@ -150,7 +154,7 @@ class ConferencesController < ApplicationController
       end
       @conference.update!(deadline: deadline, presenters_emailed: true)
       @conference.presenters.each do |p|
-        Notifier.request_selections(p, params[:subject], params[:message], deadline).deliver_now
+        Notifier.delay.request_selections(p, params[:subject], params[:message], deadline)
       end
       flash[:info] = 'Emailed presenters.'
     rescue Exception => e
@@ -180,7 +184,7 @@ class ConferencesController < ApplicationController
       @conference.update!(attendees_emailed: true)
       params = email_attendees_params
       @conference.attendees.each do |a|
-        Notifier.invite(a, params[:subject], params[:message]).deliver_now unless a.presenters.count == 0
+        Notifier.delay.invite(a, params[:subject], params[:message]) unless a.presenters.count == 0
       end
       flash[:info] = 'Emailed invitations to attendees.'
     rescue Exception => e

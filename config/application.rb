@@ -24,5 +24,8 @@ module Postvite
     config.active_record.raise_in_transactional_callbacks = true
 
     config.x.admin_email = ENV['ADMIN_EMAIL']
+
+    config.active_job.queue_adapter = :delayed_job
+
   end
 end

@@ -19,9 +19,15 @@ class Conference < ActiveRecord::Base
   end
 
   require 'csv'
+  require 'tempfile'
   require 'charlock_holmes'
 
-  def import_attendees(path, mapping)
+  def import_attendees(data, mapping)
+    path = Tempfile.open('attendees', Rails.root.join('tmp')) do |f|
+      f.binmode
+      f.write(data)
+      f
+    end
     Conference.transaction do
       self.attendees.delete_all
       self.keywords.delete_all
@@ -36,8 +42,14 @@ class Conference < ActiveRecord::Base
       end
     end
   end
+  handle_asynchronously :import_attendees
 
-  def import_presenters(path, mapping)
+  def import_presenters(data, mapping)
+    path = Tempfile.open('attendees', Rails.root.join('tmp')) do |f|
+      f.binmode
+      f.write(data)
+      f
+    end
     require 'securerandom'
     Conference.transaction do
       self.presenters.delete_all
@@ -53,5 +65,6 @@ class Conference < ActiveRecord::Base
       end
     end
   end
+  handle_asynchronously :import_presenters
 
 end

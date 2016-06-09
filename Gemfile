@@ -27,6 +27,8 @@ gem 'bootstrap-sass'
 
 gem 'charlock_holmes'
 
+gem 'delayed_job_active_record'
+
 gem 'fuzzy_match'
 
 gem 'omniauth-google-oauth2'
