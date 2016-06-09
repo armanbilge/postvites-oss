@@ -27,7 +27,11 @@ class Conference < ActiveRecord::Base
       self.keywords.delete_all
       CSV.foreach(path, headers: true, encoding: CharlockHolmes::EncodingDetector.detect(File.read(path))[:encoding]) do |row|
         params = mapping.each_pair.map { |k, v| [k, row[v]] }.to_h
-        params['keywords'] = params['keywords'].split(',').map { |k| self.keywords.find_or_create_by!(name: k.downcase) }
+        if params['keywords']
+          params['keywords'] = params['keywords'].split(',').map { |k| self.keywords.find_or_create_by!(name: k.downcase) }
+        else
+          params['keywords'] = []
+        end
         self.attendees.create!(params)
       end
     end
