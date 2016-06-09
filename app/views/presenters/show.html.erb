@@ -1,5 +1,5 @@
-<%= javascript_tag do %>
-  window.invite_limit = <%= @presenter.conference.invite_limit %>;
+<% content_for :for_head do %>
+  <%= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js' %>
 <% end %>
 
 <h1>Invite Attendees</h1>
@@ -23,15 +23,22 @@
           <div style="text-align: center">
             <button type="button" id="multiselect_rightSelected" class="btn btn-default">&nbsp;<span class="glyphicon glyphicon glyphicon-forward" aria-hidden="true"></span></button> <br/><br/>
             <button type="button" id="multiselect_leftSelected" class="btn btn-default"><span class="glyphicon glyphicon glyphicon-backward" aria-hidden="true"></span>&nbsp;</button>
-          </div>
+          	<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+					</div>
         </td>
         <td style="width: 46%">
           <fieldset>
             <div class="form-group">
               <%= f.label :attendee_ids, 'I am inviting...', class: 'control-label' %>
-              <%= f.collection_select :attendee_ids, @presenter.attendees, :id, :vital, { selected: nil, include_hidden: true }, { id: 'multiselect_to', class: 'form-control', multiple: true, size: 20, style: 'padding-right: 0' } %>
+              <%= f.collection_select :attendee_ids, @presenter.attendees, :id, :vital, { selected: nil, include_hidden: true }, { id: 'multiselect_to', class: 'form-control', multiple: true, size: 5, style: 'padding-right: 0' } %>
             </div>
           </fieldset>
+          <div class="well" style="max-height: 275px; overflow-y: scroll">
+            <legend>Filter attendees by interests</legend>
+            <% @presenter.conference.keywords.sort_by { |k| k.name }.each do |k| %>
+              <input type="checkbox" id="keyword[<%= k.id %>]"/> <%= k.name %><br/>
+            <% end %>
+          </div>
         </td>
       </tr>
     </table>
@@ -42,4 +49,12 @@
 
   <p>Sorry, you cannot currently invite anyone to your poster!</p>
 
+<% end %>
+
+<%= javascript_tag do %>
+  window.invite_limit = <%= @presenter.conference.invite_limit %>;
+	window.attendees = <%= @presenter.conference.attendees.map { |a| a.id } %>;
+  <% @presenter.conference.keywords.each do |k| %>
+    $('#keyword\\[<%= k.id %>\\]').data('attendees', <%= k.attendees.map { |a| a.id } %>);
+  <% end %>
 <% end %>

@@ -1,14 +1,4 @@
 class ConferencesController < ApplicationController
-  # extend ActiveModel::Callbacks
-  # include ActiveModel::Validations
-  # include ActiveModel::Validations::Callbacks
-
-  # before_validation :before_val
-  # def before_val(model)
-  #   # model.attributes.each_value { |v| v.strip! if v.respond_to? :strip! }
-  #   # true
-  #   puts 'pineapple'
-  # end
 
   def index
     if current_user.nil?
@@ -52,13 +42,8 @@ class ConferencesController < ApplicationController
       redirect_to conferences_path and return
     end
     begin
-      # params[:conference][:logo_url]
       @conference.update!(update_params)
-      if @conference.logo_url
-        flash[:info] = 'Logo updated!'
-      else
-        flash[:info] = 'Conference information updated.'
-      end
+      flash[:info] = 'Changes saved.'
     rescue Exception => e
       flash[:danger] = e.message
     end
@@ -211,7 +196,7 @@ class ConferencesController < ApplicationController
   end
 
   def update_params
-    params.require(:conference).permit(:invite_limit, :poster_limit, :logo_url)
+    params.require(:conference).permit(:invite_limit, :poster_limit, :email, :logo_url)
   end
 
   def upload_params
@@ -219,11 +204,11 @@ class ConferencesController < ApplicationController
   end
 
   def import_attendees_params
-    params.require(:conference).permit(:path, :last, :first, :email, :affiliation)
+    params.require(:conference).permit(:path, :last, :first, :email, :affiliation, :keywords)
   end
 
   def import_presenters_params
-    params.require(:conference).permit(:path, :last, :first, :email, :affiliation, :title, :session, :location)
+    params.require(:conference).permit(:path, :last, :first, :email, :affiliation, :title, :session, :location, :number, :abstract)
   end
 
   def email_presenters_params

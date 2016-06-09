@@ -8,7 +8,7 @@
 		  <%= f.hidden_field :path, value: @path %>
 		  <% fm = FuzzyMatch.new(@headers)%>
 		  <% if @table == 'attendees' %>
-		    <% fields = [:last, :first, :email, :affiliation] %>
+		    <% fields = [:last, :first, :email, :affiliation, :keywords] %>
 				<% field_names = ['Last Name', 'First Name', 'Email', 'Affiliation'] %>
 				<% cls = Attendee %>
 		  <% else %>

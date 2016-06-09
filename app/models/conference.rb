@@ -3,8 +3,10 @@ class Conference < ActiveRecord::Base
   belongs_to :user
   has_many :attendees
   has_many :presenters
+  has_many :keywords
 
   validates :name, presence: true
+  validates :email, :allow_blank => true, format: { with: /@/, on: :create }
   validates :invite_limit, numericality: { greater_than_or_equal_to: 1 }
   validates :poster_limit, numericality: { greater_than_or_equal_to: 1 }
 
@@ -17,12 +19,16 @@ class Conference < ActiveRecord::Base
   end
 
   require 'csv'
+  require 'charlock_holmes'
 
   def import_attendees(path, mapping)
     Conference.transaction do
       self.attendees.delete_all
-      CSV.foreach(path, headers: true) do |row|
-        self.attendees.create!(mapping.each_pair.map { |k, v| [k, row[v]] }.to_h)
+      self.keywords.delete_all
+      CSV.foreach(path, headers: true, encoding: CharlockHolmes::EncodingDetector.detect(File.read(path))[:encoding]) do |row|
+        params = mapping.each_pair.map { |k, v| [k, row[v]] }.to_h
+        params['keywords'] = params['keywords'].split(',').map { |k| self.keywords.find_or_create_by!(name: k.downcase) }
+        self.attendees.create!(params)
       end
     end
   end
@@ -31,7 +37,7 @@ class Conference < ActiveRecord::Base
     require 'securerandom'
     Conference.transaction do
       self.presenters.delete_all
-      CSV.foreach(path, headers: true) do |row|
+      CSV.foreach(path, headers: true, encoding: CharlockHolmes::EncodingDetector.detect(File.read(path))[:encoding]) do |row|
         attributes = mapping.each_pair.map { |k, v| [k, row[v]] }.to_h
         secret = nil
         loop do
