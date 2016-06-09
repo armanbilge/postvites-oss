@@ -2,8 +2,11 @@
   <%= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js' %>
 <% end %>
 
+<%= image_tag @presenter.conference.logo_url, style: 'object-fit: contain; width: 300px; height: 128px; float: right' %>
+<br/>
 <h1>Invite Attendees</h1>
-
+<br/>
+<br/>
 <% if @presenter.conference.step == 2 %>
 
   <p>You may invite up to <%= pluralize(@presenter.conference.invite_limit, 'conference attendee') %> to your poster, "<%= @presenter.title %>".</p>
