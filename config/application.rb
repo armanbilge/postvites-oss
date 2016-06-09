@@ -27,5 +27,8 @@ module Postvite
 
     config.active_job.queue_adapter = :delayed_job
 
+    config.action_mailer.delivery_method = :postmark
+    config.action_mailer.postmark_settings = { :api_token => "75c56088-a2aa-45e6-9cc6-2bcf22cee0ab" }
+
   end
 end
