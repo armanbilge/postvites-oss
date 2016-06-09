@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160606114352) do
+ActiveRecord::Schema.define(version: 20160609040115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,9 @@ ActiveRecord::Schema.define(version: 20160606114352) do
     t.datetime "updated_at",    null: false
     t.string   "number"
     t.text     "abstract"
+    t.string   "session_day"
+    t.string   "session_start"
+    t.string   "session_end"
   end
 
   add_index "presenters", ["conference_id"], name: "index_presenters_on_conference_id", using: :btree
