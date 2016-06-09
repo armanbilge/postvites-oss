@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'no-reply@' + ENV['HOSTNAME']
+  default from: ENV['FROM_EMAIL']
   layout 'mailer'
 end
