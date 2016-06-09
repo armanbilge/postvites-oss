@@ -204,7 +204,7 @@ class ConferencesController < ApplicationController
   end
 
   def import_attendees_params
-    params.require(:conference).permit(:path, :last, :first, :email, :affiliation)
+    params.require(:conference).permit(:path, :last, :first, :email, :affiliation, :keywords)
   end
 
   def import_presenters_params

@@ -3,6 +3,8 @@ class Attendee < ActiveRecord::Base
   belongs_to :conference
   has_many :invitations
   has_many :presenters, through: :invitations
+  has_many :attendee_keywords
+  has_many :keywords, through: :attendee_keywords
 
   validates :last, presence: true
   validates :first, presence: true

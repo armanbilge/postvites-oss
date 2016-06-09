@@ -3,6 +3,7 @@ class Conference < ActiveRecord::Base
   belongs_to :user
   has_many :attendees
   has_many :presenters
+  has_many :keywords
 
   validates :name, presence: true
   validates :email, :allow_blank => true, format: { with: /@/, on: :create }
@@ -23,8 +24,11 @@ class Conference < ActiveRecord::Base
   def import_attendees(path, mapping)
     Conference.transaction do
       self.attendees.delete_all
+      self.keywords.delete_all
       CSV.foreach(path, headers: true, encoding: CharlockHolmes::EncodingDetector.detect(File.read(path))[:encoding]) do |row|
-        self.attendees.create!(mapping.each_pair.map { |k, v| [k, row[v]] }.to_h)
+        params = mapping.each_pair.map { |k, v| [k, row[v]] }.to_h
+        params['keywords'] = params['keywords'].split(',').map { |k| self.keywords.find_or_create_by!(name: k.downcase) }
+        self.attendees.create!(params)
       end
     end
   end
