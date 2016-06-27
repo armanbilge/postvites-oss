@@ -11,7 +11,7 @@ class Presenter < ActiveRecord::Base
   validates :secret, presence: true, uniqueness: true
 
   def vital
-    "#{last}, #{first} (#{affiliation})"
+    "#{last}, #{first} (#{affiliation unless affiliation.blank?})"
   end
 
   def responded?
