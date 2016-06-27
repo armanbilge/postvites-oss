@@ -11,7 +11,7 @@ class Attendee < ActiveRecord::Base
   validates :email, presence: true, uniqueness: { scope: :conference, case_sensitive: false }, format: { with: /@/, on: :create }
 
   def vital
-    "#{last}, #{first} (#{affiliation})"
+    "#{last}, #{first} (#{affiliation unless affiliation.blank?})"
   end
 
 end
