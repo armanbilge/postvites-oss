@@ -36,7 +36,7 @@
               <%= f.collection_select :attendee_ids, @presenter.attendees, :id, :vital, { selected: nil, include_hidden: true }, { id: 'multiselect_to', class: 'form-control', multiple: true, size: 5, style: 'padding-right: 0' } %>
             </div>
           </fieldset>
-          <div class="well" style="max-height: 275px; overflow-y: scroll;<% unless @presenter.conference.keywords.length > 0 %> visibility: hidden;<% end %>">
+          <div class="well" style="height: 275px; overflow-y: scroll;<% unless @presenter.conference.keywords.length > 0 %> visibility: hidden;<% end %>">
             <legend>Filter attendees by interests</legend>
             <% @presenter.conference.keywords.sort_by { |k| k.name }.each do |k| %>
               <input type="checkbox" id="keyword[<%= k.id %>]"/> <%= k.name %><br/>
