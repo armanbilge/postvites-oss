@@ -26,23 +26,25 @@
 	      </button>
 				<%= link_to raw('<strong>postvite</strong>'), root_path, class: 'navbar-brand' %>
 	    </div>
-	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<% if !current_user.nil? %>
-	      <ul class="nav navbar-nav">
-	        <li><%=link_to raw('My Conferences <span class="sr-only">(current)</span>'), conferences_path %></li>
-	      </ul>
-				<% end %>
-	      <ul class="nav navbar-nav navbar-right">
-					<li>
-						<% if current_user.nil? %>
-						<%= link_to 'Sign In', '/auth/google' %>
-						<% else %>
-						<%= link_to 'Sign Out', signout_path, method: :delete %>
-						<% end %>
-					</li>
-	      </ul>
-	    </div>
-	  </div>
+      <% unless controller_name == 'presenters' %>
+  	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  				<% if !current_user.nil? %>
+  	      <ul class="nav navbar-nav">
+  	        <li><%=link_to raw('My Conferences <span class="sr-only">(current)</span>'), conferences_path %></li>
+  	      </ul>
+  				<% end %>
+  	      <ul class="nav navbar-nav navbar-right">
+  					<li>
+  						<% if current_user.nil? %>
+  						<%= link_to 'Sign In', '/auth/google' %>
+  						<% else %>
+  						<%= link_to 'Sign Out', signout_path, method: :delete %>
+  						<% end %>
+  					</li>
+  	      </ul>
+  	    </div>
+			<% end %>
+    </div>
 	</nav>
 
   <div class="container" style="width: 100%">
