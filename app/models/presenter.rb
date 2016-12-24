@@ -15,7 +15,7 @@ class Presenter < ActiveRecord::Base
   end
 
   def responded?
-    attendees.length > 0
+    attendees.count > 0
   end
 
   def to_param
