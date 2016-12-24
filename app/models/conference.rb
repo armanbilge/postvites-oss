@@ -32,7 +32,7 @@ class Conference < ActiveRecord::Base
       self.attendees.delete_all
       self.keywords.delete_all
       CSV.foreach(path, headers: true, encoding: CharlockHolmes::EncodingDetector.detect(File.read(path))[:encoding]) do |row|
-        params = mapping.each_pair.map { |k, v| [k, row[v]] }.to_h
+        params = mapping.each_pair { |k, v| [k, row[v]] }.to_h
         if params['keywords']
           params['keywords'] = params['keywords'].split(',').map { |k| self.keywords.find_or_create_by!(name: k.downcase) }
         else
@@ -54,7 +54,7 @@ class Conference < ActiveRecord::Base
     Conference.transaction do
       self.presenters.delete_all
       CSV.foreach(path, headers: true, encoding: CharlockHolmes::EncodingDetector.detect(File.read(path))[:encoding]) do |row|
-        attributes = mapping.each_pair.map { |k, v| [k, row[v]] }.to_h
+        attributes = mapping.each_pair { |k, v| [k, row[v]] }.to_h
         secret = nil
         loop do
           secret = SecureRandom.hex
