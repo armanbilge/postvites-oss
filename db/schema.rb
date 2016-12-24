@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160609054620) do
+ActiveRecord::Schema.define(version: 20161224050519) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,10 +20,9 @@ ActiveRecord::Schema.define(version: 20160609054620) do
     t.integer  "keyword_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["attendee_id"], name: "index_attendee_keywords_on_attendee_id", using: :btree
+    t.index ["keyword_id"], name: "index_attendee_keywords_on_keyword_id", using: :btree
   end
-
-  add_index "attendee_keywords", ["attendee_id"], name: "index_attendee_keywords_on_attendee_id", using: :btree
-  add_index "attendee_keywords", ["keyword_id"], name: "index_attendee_keywords_on_keyword_id", using: :btree
 
   create_table "attendees", force: :cascade do |t|
     t.string   "last"
@@ -34,9 +32,8 @@ ActiveRecord::Schema.define(version: 20160609054620) do
     t.integer  "conference_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.index ["conference_id"], name: "index_attendees_on_conference_id", using: :btree
   end
-
-  add_index "attendees", ["conference_id"], name: "index_attendees_on_conference_id", using: :btree
 
   create_table "conferences", force: :cascade do |t|
     t.string   "name"
@@ -47,12 +44,11 @@ ActiveRecord::Schema.define(version: 20160609054620) do
     t.integer  "user_id"
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
-    t.string   "logo_url"
+    t.string   "logo_url",           default: ""
     t.date     "deadline"
     t.string   "email"
+    t.index ["user_id"], name: "index_conferences_on_user_id", using: :btree
   end
-
-  add_index "conferences", ["user_id"], name: "index_conferences_on_user_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -66,28 +62,25 @@ ActiveRecord::Schema.define(version: 20160609054620) do
     t.string   "queue"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
   end
-
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "invitations", force: :cascade do |t|
     t.integer  "attendee_id"
     t.integer  "presenter_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.index ["attendee_id"], name: "index_invitations_on_attendee_id", using: :btree
+    t.index ["presenter_id"], name: "index_invitations_on_presenter_id", using: :btree
   end
-
-  add_index "invitations", ["attendee_id"], name: "index_invitations_on_attendee_id", using: :btree
-  add_index "invitations", ["presenter_id"], name: "index_invitations_on_presenter_id", using: :btree
 
   create_table "keywords", force: :cascade do |t|
     t.string   "name"
     t.integer  "conference_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.index ["conference_id"], name: "index_keywords_on_conference_id", using: :btree
   end
-
-  add_index "keywords", ["conference_id"], name: "index_keywords_on_conference_id", using: :btree
 
   create_table "presenters", force: :cascade do |t|
     t.string   "last"
@@ -106,9 +99,8 @@ ActiveRecord::Schema.define(version: 20160609054620) do
     t.string   "session_day"
     t.string   "session_start"
     t.string   "session_end"
+    t.index ["conference_id"], name: "index_presenters_on_conference_id", using: :btree
   end
-
-  add_index "presenters", ["conference_id"], name: "index_presenters_on_conference_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "provider"
