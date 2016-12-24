@@ -1,11 +1,12 @@
 <% content_for :for_head do %>
   <script type="text/javascript">
-  counter = 3;
   $(document).ready(function() {
+    var counter = 3;
     $('#countdown').text(counter);
-    setInterval(function() {
+    var refresher = setInterval(function() {
       if (counter === 0) {
         window.location.reload(false);
+        clearInterval(refresher)
         return;
       }
       --counter;
@@ -13,6 +14,7 @@
       return counter;
     }, 1000);
   })
+  $(document).on('page:load', ready);
   </script>
 <% end %>
 
