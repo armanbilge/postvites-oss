@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get '/auth/:provider/callback', to: 'sessions#create'
   delete '/signout', to: 'sessions#destroy', as: 'signout'
 
+  get '/jobs/:id/:conference', to: 'delayed_jobs#show'
+
   resources :conferences do
     member do
       patch :upload
