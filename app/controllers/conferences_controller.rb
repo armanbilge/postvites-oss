@@ -97,10 +97,11 @@ class ConferencesController < ApplicationController
     end
     begin
       params = import_attendees_params
+      job = nil
       File.open(params[:path], 'rb') do |f|
-        @conference.import_attendees(f.read, params.except(:path))
+        job = @conference.import_attendees(f.read, params.except(:path))
       end
-      flash[:info] = 'Importing attendee data.'
+      redirect_to "/jobs/#{job.id}/#{@conference.id}" and return
     rescue Exception => e
       flash[:danger] = e.message
     end
@@ -120,10 +121,11 @@ class ConferencesController < ApplicationController
     end
     begin
       params = import_presenters_params
+      job = nil
       File.open(params[:path], 'rb') do |f|
-        @conference.import_presenters(f.read, params.except(:path))
+        job = @conference.import_presenters(f.read, params.except(:path))
       end
-      flash[:info] = 'Importing presenter data.'
+      redirect_to "/jobs/#{job.id}/#{@conference.id}" and return
     rescue Exception => e
       flash[:danger] = e.message
     end
