@@ -8,6 +8,8 @@ class Presenter < ActiveRecord::Base
   validates :first, presence: true
   validates :email, presence: true, format: { with: /@/, on: :create }
   validates :title, presence: true
+  validates :session_day, presence: true
+  validate :session_day_must_be_in_future
   validates :secret, presence: true, uniqueness: true
 
   def vital
@@ -20,6 +22,14 @@ class Presenter < ActiveRecord::Base
 
   def to_param
     secret
+  end
+
+  private
+
+  def session_day_must_be_in_future
+    if session_day.present? && !session_day.future?
+      errors.add(:session_day, 'must be in the future')
+    end
   end
 
 end
