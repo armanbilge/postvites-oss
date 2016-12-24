@@ -1,5 +1,4 @@
-<% content_for :for_head do %>
-  <script type="text/javascript">
+<%= javascript_tag do %>
   $(document).ready(function() {
     var counter = 3;
     $('#countdown').text(counter);
@@ -15,7 +14,6 @@
     }, 1000);
   })
   $(document).on('page:load', ready);
-  </script>
 <% end %>
 
 <h1>Processing...</h1>
