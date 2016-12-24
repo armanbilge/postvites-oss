@@ -11,7 +11,7 @@
 
   <p>You may invite up to <%= pluralize(@presenter.conference.invite_limit, 'conference attendee') %> to your poster, "<%= @presenter.title %>".</p>
 
-	<p>Please submit your selections by <%= @presenter.conference.deadline.to_formatted_s(:long) %>. Thank you!</p>
+	<p>You can change your selections until <%= @presenter.conference.deadline.to_formatted_s(:long) %>. Thank you!</p>
 
   <%= form_for @presenter, html: { class: 'form' } do |f| %>
     <table style="width: 100%">
