@@ -18,6 +18,10 @@ class Conference < ActiveRecord::Base
     attendees.joins('left join invitations on attendees.id = invitations.attendee_id').group('attendees.id').having("count(attendee_id) < #{poster_limit}")
   end
 
+  def get_time_zone
+    ActiveSupport::TimeZone.new(time_zone)
+  end
+
   require 'csv'
   require 'tempfile'
   require 'charlock_holmes'

@@ -202,7 +202,7 @@ class ConferencesController < ApplicationController
   end
 
   def update_params
-    params.require(:conference).permit(:invite_limit, :poster_limit, :email, :logo_url)
+    params.require(:conference).permit(:invite_limit, :poster_limit, :email, :logo_url, :time_zone)
   end
 
   def upload_params
