@@ -16,6 +16,35 @@ class Presenter < ActiveRecord::Base
     "#{last}, #{first}#{ ' (' + affiliation + ')' unless affiliation.blank?}"
   end
 
+  def presenter
+    "#{first} #{last}#{ ' (' + affiliation + ')' unless affiliation.blank?}"
+  end
+
+  def date_time
+    time_format = '%l:%M %p'
+    "#{session_day.strftime('%a %b %e')}#{' ' + session_start.strftime(time_format) + ' to ' + session_end.strftime(time_format) unless session_start.nil?}"
+  end
+
+  def location_number
+    "#{location}#{' #' + number.to_s unless number.nil? }"
+  end
+
+  def info
+    info = ''
+    info += 'Title: ' + title
+    info += "\nPresenter: " + presenter
+    unless session.nil?
+      info += "\nSession: " + session
+    end
+    info += "\nDate/Time: " + date_time
+    unless location.nil?
+      info += "\nLocation: " + location_number
+    end
+    unless abstract.nil?
+      info += "\nAbstract:\n#{abstract}"
+    end
+  end
+
   def responded?
     attendees.count > 0
   end

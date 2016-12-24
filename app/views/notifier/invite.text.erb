@@ -3,12 +3,6 @@
 Please find details of the <%= 'poster'.pluralize(@recipient.presenters.count) %> that you are invited to view below.
 
 <% @recipient.presenters.sort_by { |p| p.vital }.each do |p| %>
-<%= "Title: #{p.title}" %>
-<%= "Presenter: #{p.first} #{p.last} (#{p.affiliation})" %>
-<%= "Session: #{p.session}\n" unless p.session.nil? -%>
-<%= "Date/Time: #{p.session_day} #{p.session_start} to #{p.session_end}\n" unless p.session_day.nil? -%>
-<%= "Location: #{p.location}, poster board #{p.number}\n" unless p.location.nil? -%>
-<%= "Abstract:\n" unless p.abstract.nil? -%>
-<%= "#{p.abstract}\n" unless p.abstract.nil? -%>
+<%= "#{p.info}" %>
 
 <% end %>
