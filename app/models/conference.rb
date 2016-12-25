@@ -61,9 +61,11 @@ class Conference < ActiveRecord::Base
       f.write(data)
       f
     end
+    require 'chronic'
     require 'securerandom'
     Conference.transaction do
       self.presenters.delete_all
+      Chronic.time_class = get_time_zone
       CSV.foreach(path, headers: true, encoding: CharlockHolmes::EncodingDetector.detect(File.read(path))[:encoding]) do |row|
         params = mapping.map { |k, v| [k, row[v]] }.to_h
         secret = nil
@@ -72,6 +74,7 @@ class Conference < ActiveRecord::Base
           break unless Presenter.exists?(secret: secret)
         end
         params[:secret] = secret
+        params['session_day'] = Chronic.parse(params['session_day'])
         self.presenters.create!(params)
       end
     end
