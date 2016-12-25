@@ -9,20 +9,22 @@
 		  <% fm = FuzzyMatch.new(@headers)%>
 		  <% if @table == 'attendees' %>
 		    <% fields = [:last, :first, :email, :affiliation, :keywords] %>
-				<% field_names = ['Last Name', 'First Name', 'Email', 'Affiliation'] %>
+				<% field_names = ['Last Name', 'First Name', 'Email', 'Affiliation', 'Keywords'] %>
+        <% multiple = [false, false, false, false, true] %>
 				<% cls = Attendee %>
 		  <% else %>
 		    <% fields = [:last, :first, :email, :affiliation, :title, :number, :session, :location, :session_day, :session_start, :session_end, :abstract] %>
 				<% field_names = ['Last Name', 'First Name', 'Email', 'Affiliation', 'Poster Title',  'Number', 'Session', 'Location', 'Session Day', 'Session Start', 'Session End', 'Abstract'] %>
-				<% cls = Presenter %>
+        <% multiple = [false, false, false, false, false, false, false, false, false, false, false, false] %>
+        <% cls = Presenter %>
 		  <% end %>
-		  <% fields.zip(field_names).each do |a, n| %>
+		  <% fields.zip(field_names, multiple).each do |a, n, mult| %>
 					<div class="form-group">
 				    <%= f.label a, n, class: 'col-md-2 control-label' %>
 						<div class="col-md-10" style="width: 25%">
               <% optional = cls.validators_on(a).any? { |v| v.is_a?(ActiveModel::Validations::PresenceValidator) } %>
-					    <%= f.collection_select a, @headers + (optional ? [] : ['n/a']), :to_s, :to_s, { selected: fm.find(a.to_s, must_match_at_least_one_word: !optional) || 'n/a' }, { class: 'form-control' } %>
-						</div>
+					    <%= f.collection_select a, @headers + (optional ? [] : ['n/a']), :to_s, :to_s, { selected: fm.find(a.to_s, must_match_at_least_one_word: !optional) || 'n/a', include_hidden: false }, { class: 'form-control', multiple: mult, size: mult ? 5 : 1, style: 'width: 200px' } %>
+            </div>
 					</div>
 				<br/>
 		  <% end %>
