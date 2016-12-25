@@ -50,7 +50,7 @@
 
 <% else %>
 
-  <% if @presenter.conference.deadline.future? %>
+  <% if @presenter.conference.deadline.nil? || @presenter.conference.deadline.future? %>
     <p>Sorry, the invitation system has not opened yet. Check back soon!</p>
   <% else %>
     <p>Sorry, the deadline to send invitations was <%= time_ago_in_words(@presenter.conference.deadline) %> ago!</p>
