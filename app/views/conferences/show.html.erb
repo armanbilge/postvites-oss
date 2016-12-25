@@ -41,7 +41,7 @@
   <%= form_for @conference, validate: true, html: {class: 'form'} do |f| %>
     <% disabled = @conference.step > 2 %>
     <%= f.select :time_zone, ActiveSupport::TimeZone::MAPPING.keys, {}, { style: 'text-align: right', disabled: disabled } %>
-    <%= f.submit 'Update', class: 'btn btn-primary', disabled: disabled, style: 'float: right'%>
+    <%= f.submit 'Update Time Zone', class: 'btn btn-primary', disabled: disabled, style: 'float: right'%>
   <% end %>
 </div>
 
