@@ -43,6 +43,7 @@ class Presenter < ActiveRecord::Base
     unless abstract.nil?
       info += "\nAbstract:\n#{abstract}"
     end
+    info
   end
 
   def responded?
