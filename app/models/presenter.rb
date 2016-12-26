@@ -29,10 +29,13 @@ class Presenter < ActiveRecord::Base
     "#{location}#{' #' + number.to_s unless number.nil? }"
   end
 
-  def info
+  def info(includeEmail=false)
     info = ''
     info += 'Title: ' + title
     info += "\nPresenter: " + presenter
+    if includeEmail
+      info += "\nEmail: " + email
+    end
     unless session.nil?
       info += "\nSession: " + session
     end
