@@ -22,7 +22,7 @@ class Presenter < ActiveRecord::Base
 
   def date_time
     time_format = '%l:%M %p'
-    "#{session_day.strftime('%a %b %e')}#{' ' + session_start.strftime(time_format) + ' to ' + session_end.strftime(time_format) unless session_start.nil?}"
+    "#{session_day.strftime('%a %b %e')}#{' ' + session_start.strftime(time_format).strip + ' to ' + session_end.strftime(time_format).strip unless session_start.nil?}"
   end
 
   def location_number
