@@ -213,6 +213,7 @@
                 </p>
               </div>
             </div>
+        	  <label title="Attendees will automatically be sent reminder emails the morning the poster is displayed." data-toggle="tooltip" data-placement="bottom"><%= check_box :email, :remind, checked: true, class: 'checkbox-inline', style: 'float: left', disabled: disabled %>&nbsp;Schedule reminder emails.</label>
         	  <%= f.submit 'Send', class: 'btn btn-primary', style: 'float: right', title: 'This may take a few moments.', data: { toggle: 'tooltip', placement: 'left' }, disabled: disabled %>
           </fieldset>
       	<% end %>

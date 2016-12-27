@@ -13,4 +13,10 @@ class Notifier < ApplicationMailer
     mail(from: from_with_name(@recipient.conference.name), to: @recipient.email, cc: @recipient.conference.email, subject: subject)
   end
 
+  def remind(attendee, subject, date)
+    @recipient = attendee
+    @day = date
+    mail(from: from_with_name(@recipient.conference.name), to: @recipient.email, cc: @recipient.conference.email, subject: subject)
+  end
+
 end
