@@ -48,6 +48,14 @@
 	  <%= f.submit 'Save', class: 'btn btn-primary', style: 'float: right' %>
   <% end %>
 
+  <%= javascript_tag do %>
+    window.invite_limit = <%= @presenter.conference.invite_limit %>;
+  	window.attendees = <%= @presenter.conference.attendees.map { |a| a.id } %>;
+    <% @presenter.conference.keywords.each do |k| %>
+      $('#keyword\\[<%= k.id %>\\]').data('attendees', <%= k.attendees.map { |a| a.id } %>);
+    <% end %>
+  <% end %>
+
 <% else %>
 
   <% if @presenter.conference.deadline.nil? || @presenter.conference.deadline.future? %>
@@ -56,12 +64,4 @@
     <p>Sorry, the deadline to send invitations was <%= time_ago_in_words(@presenter.conference.deadline) %> ago!</p>
   <% end %>
 
-<% end %>
-
-<%= javascript_tag do %>
-  window.invite_limit = <%= @presenter.conference.invite_limit %>;
-	window.attendees = <%= @presenter.conference.attendees.map { |a| a.id } %>;
-  <% @presenter.conference.keywords.each do |k| %>
-    $('#keyword\\[<%= k.id %>\\]').data('attendees', <%= k.attendees.map { |a| a.id } %>);
-  <% end %>
 <% end %>
