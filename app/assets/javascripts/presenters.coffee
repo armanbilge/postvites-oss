@@ -10,7 +10,7 @@ ready = ->
       $('option').each((i, option) ->
         $(option).dblclick((e) ->
           if $.inArray(option, $('#multiselect_to').find('option')) != -1
-            $('#modalBody\\[' + $(option).val() + '\\]').html('<iframe id="messageFrame[<%= a.id %>]" frameBorder="0" style="width:100%" height="270px" src="/invitations/' + window.presenter_id + '/' + $(option).val() + '"></iframe>')
+            $('#modalBody\\[' + $(option).val() + '\\]').html('<iframe frameBorder="0" style="width:100%" height="270px" src="/invitations/' + window.presenter_id + '/' + $(option).val() + '"></iframe>')
             $('#message\\[' + $(option).val() + '\\]').modal('show')
         )
       )
