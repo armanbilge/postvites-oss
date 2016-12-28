@@ -3,6 +3,7 @@
 Please find details of the <%= 'poster'.pluralize(@recipient.presenters.count) %> that you are invited to view below.
 
 <% @recipient.presenters.sort_by { |p| p.vital }.each do |p| %>
-<%= "#{p.info}" %>
+<% invite = Invitation.find_by(attendee_id: @recipient.id, presenter_id: p.id)%>
+<%= "#{p.info(invite.include_email)}#{"\nMessage:\n" + invite.message unless invite.message.blank?}" %>
 
 <% end %>
