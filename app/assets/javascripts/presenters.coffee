@@ -5,6 +5,15 @@
 ready = ->
   $ ->
       $('#multiselect').multiselect()
+      $('#multiselect').unbind('dblclick')
+      $('#multiselect_to').unbind('dblclick')
+      $('option').each((i, option) ->
+        $(option).dblclick((e) ->
+          if $.inArray(option, $('#multiselect_to').find('option')) != -1
+            $('#modalBody\\[' + $(option).val() + '\\]').html('<iframe id="messageFrame[<%= a.id %>]" frameBorder="0" style="width:100%" height="270px" src="/invitations/' + window.presenter_id + '/' + $(option).val() + '"></iframe>')
+            $('#message\\[' + $(option).val() + '\\]').modal('show')
+        )
+      )
       $('#multiselect').change(-> $('#multiselect_rightSelected').prop('disabled', $('#multiselect').val() == undefined || $('#multiselect').val().length + $('#multiselect_to option').length > window.invite_limit))
       if navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1
         $('#multiselect').find('option').each((i, option) ->

@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag '//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/simplex/bootstrap.min.css', media: 'all' %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body style="background-color:#FFFFFF">
+  	<% flash.each do |key, value| %>
+    	<div class="alert alert-<%= key %>">
+    	  <%= value %>
+    	</div>
+  	<% end %>
+    <%= form_for @invitation, url: invitation_path(@invitation), method: :patch do |f| %>
+      Message (optional):<br/>
+      <%= f.text_area :message, size: "60x6" %>
+      <br/><br/>
+      <%= f.check_box :include_email %>&nbsp;Include my email address.
+      <br/>
+      <%= f.submit 'Save', class: 'btn btn-primary btn-sm', style: 'float: right' %>
+    <% end %>
+  </body>
+</html>
