@@ -5,7 +5,7 @@
 ready = ->
   $ ->
       $('#multiselect').multiselect()
-      $('#multiselect').change(-> $('#multiselect_rightSelected').prop('disabled', $('#multiselect').val() == undefined || $('#multiselect').val().length + $('#multiselect_to option').length > invite_limit))
+      $('#multiselect').change(-> $('#multiselect_rightSelected').prop('disabled', $('#multiselect').val() == undefined || $('#multiselect').val().length + $('#multiselect_to option').length > window.invite_limit))
       if navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1
         $('#multiselect').find('option').each((i, option) ->
           $(option).data('text', $(option).text())
