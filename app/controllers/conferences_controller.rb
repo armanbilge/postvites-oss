@@ -186,7 +186,7 @@ class ConferencesController < ApplicationController
       @conference.attendees.each do |a|
         Notifier.delay.invite(a, params[:subject], params[:message]) unless a.presenters.count == 0
         if params[:remind]
-          presenters.distinct.pluck(:session_day).each |day|
+          presenters.distinct.pluck(:session_day).each do |day|
             if a.presenters.where(session_day: day).count > 0
               Notifier.delay(run_at: day.in_time_zone(get_time_zone) + 5.hours).remind(a, 'Reminder: ' + subject, day)
             end
