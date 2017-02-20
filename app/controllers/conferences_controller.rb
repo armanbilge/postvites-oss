@@ -197,9 +197,11 @@ class ConferencesController < ApplicationController
           end
         end
       end
-      $twitter.update("Just sent out poster invitations for #{@conference.hashtag}. If you received one, we hope you'll stop by!")
-      presenters.distinct.pluck(:session_day).each do |day|
-        $twitter.delay(run_at: day.in_time_zone(get_time_zone) + 5.hours).update("#{@conference.hashtag} poster session today. If you received an invitation to a poster, we hope you'll stop by!")
+      if not @conference.hashtag.blank?
+        $twitter.update("Just sent out poster invitations for #{@conference.hashtag}. If you received one, we hope you'll stop by!")
+        presenters.distinct.pluck(:session_day).each do |day|
+          $twitter.delay(run_at: day.in_time_zone(get_time_zone) + 5.hours).update("#{@conference.hashtag} poster session today. If you received an invitation to a poster, we hope you'll stop by!")
+        end
       end
       flash[:info] = 'Emailed invitations to attendees.'
     rescue Exception => e
