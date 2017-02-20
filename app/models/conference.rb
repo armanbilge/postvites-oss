@@ -7,6 +7,7 @@ class Conference < ActiveRecord::Base
 
   validates :name, presence: true
   validates :time_zone, presence: true, inclusion: { in: ActiveSupport::TimeZone::MAPPING.keys }
+  validates :hashtag, allow_blank: true, format: { with: /\A#/ }
   validates :email, :allow_blank => true, format: { with: /@/, on: :create }
   validates :invite_limit, numericality: { greater_than_or_equal_to: 1 }
   validates :poster_limit, numericality: { greater_than_or_equal_to: 1 }

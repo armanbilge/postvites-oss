@@ -157,6 +157,11 @@ class ConferencesController < ApplicationController
         Notifier.delay.request_selections(p, params[:subject], params[:message], deadline)
       end
       flash[:info] = 'Emailed presenters.'
+      if not @conference.hashtag.blank?
+        $twitter.update("Presenters, check your email for the chance to invite someone to view your poster at #{@conference.hashtag}")
+        $twitter.delay(run_at: deadline.in_time_zone(get_time_zone) - 1.day).update("Presenters, today is your last chance to invite someone to view your poster at #{@conference.hashtag}")
+        flash[:info] += ' Posted to Twitter.'
+      end
     rescue Exception => e
       @conference.update!(presenters_emailed: false)
       flash[:danger] = e.message
@@ -193,6 +198,10 @@ class ConferencesController < ApplicationController
           end
         end
       end
+      $twitter.update("Just sent out poster invitations for #{@conference.hashtag}. If you received one, we hope you'll stop by!")
+      presenters.distinct.pluck(:session_day).each do |day|
+        $twitter.delay(run_at: day.in_time_zone(get_time_zone) + 5.hours).update("#{@conference.hashtag} poster session today. If you received an invitation to a poster, we hope you'll stop by!")
+      end
       flash[:info] = 'Emailed invitations to attendees.'
     rescue Exception => e
       @conference.update!(attendees_emailed: false)
@@ -207,7 +216,7 @@ class ConferencesController < ApplicationController
   end
 
   def update_params
-    params.require(:conference).permit(:invite_limit, :poster_limit, :email, :logo_url, :time_zone)
+    params.require(:conference).permit(:invite_limit, :poster_limit, :email, :logo_url, :time_zone, :hashtag)
   end
 
   def upload_params

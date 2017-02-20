@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161227015052) do
+ActiveRecord::Schema.define(version: 20170220124437) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20161227015052) do
     t.date     "deadline"
     t.string   "email"
     t.string   "time_zone",          default: "UTC"
+    t.string   "hashtag"
     t.index ["user_id"], name: "index_conferences_on_user_id", using: :btree
   end
 

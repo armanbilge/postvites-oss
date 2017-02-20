@@ -36,14 +36,32 @@
   </tr>
 </table>
 
-<div class="well">
-  <legend>Conference Time Zone</legend>
-  <%= form_for @conference, validate: true, html: {class: 'form'} do |f| %>
-    <% disabled = @conference.step > 2 %>
-    <%= f.select :time_zone, ActiveSupport::TimeZone::MAPPING.keys, {}, { style: 'text-align: right', disabled: disabled } %>
-    <%= f.submit 'Update Time Zone', class: 'btn btn-primary', disabled: disabled, style: 'float: right'%>
-  <% end %>
-</div>
+<table style="width: 100%">
+  <tr>
+    <td>
+      <div class="well">
+        <legend>Twitter Hashtag</legend>
+        <%= form_for @conference, validate: true, html: {class: 'form'} do |f| %>
+          <%= f.text_field :hashtag, placeholder: ' #myconference' %> &nbsp;
+          <%= f.submit 'Update', class: 'btn btn-primary', style: 'float: right'%>
+        <% end %>
+      </div>
+    </td>
+    <td>
+      <div style="width: 16px">
+    </td>
+    <td>
+      <div class="well">
+        <legend>Conference Time Zone</legend>
+        <%= form_for @conference, validate: true, html: {class: 'form'} do |f| %>
+          <% disabled = @conference.step > 2 %>
+          <%= f.select :time_zone, ActiveSupport::TimeZone::MAPPING.keys, {}, { style: 'text-align: right', disabled: disabled } %>
+          <%= f.submit 'Update', class: 'btn btn-primary', disabled: disabled, style: 'float: right'%>
+        <% end %>
+      </div>
+    </td>
+  </tr>
+</table>
 
 <div class="well">
 	<table style="table-layout: fixed; width: 100%">

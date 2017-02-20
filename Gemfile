@@ -37,6 +37,8 @@ gem 'omniauth-google-oauth2'
 
 gem 'postmark-rails'
 
+gem 'twitter'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
