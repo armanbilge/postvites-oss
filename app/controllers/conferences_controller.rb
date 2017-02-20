@@ -185,7 +185,6 @@ class ConferencesController < ApplicationController
       redirect_to conferences_path and return
     end
     begin
-      redirect_to @conference
       @conference.update!(attendees_emailed: true)
       params = email_attendees_params
       @conference.attendees.each do |a|
@@ -207,6 +206,7 @@ class ConferencesController < ApplicationController
       @conference.update!(attendees_emailed: false)
       flash[:danger] = e.message
     end
+    redirect_to @conference
   end
 
   private
