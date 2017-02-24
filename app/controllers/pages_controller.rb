@@ -7,7 +7,7 @@ class PagesController < ApplicationController
   def send_message
     params = send_message_params
     begin
-      ActionMailer::Base.mail(to: Rails.configuration.x.admin_email, from: "#{params[:name]} <#{params[:email]}>", subject: 'Message from postvites user', body: params[:message]).deliver_now
+      ActionMailer::Base.mail(to: Rails.configuration.x.admin_email, from: Rails.configuration.x.from_email, subject: 'Message from postvites user', body: "#{params[:name]} <#{params[:email]}> wrote the following message:\n\n" + params[:message]).deliver_now
       flash[:info] = 'Thanks, your message has been received.'
     rescue Exception => e
       flash[:danger] = e.message
