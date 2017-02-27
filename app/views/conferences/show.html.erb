@@ -103,7 +103,7 @@
             <%= f.hidden_field :table, value: 'attendees' %>
             <%= f.file_field :csv, disabled: disabled %><br/>
             <% if @conference.attendees.count > 0 %>
-        	    <%= f.submit 'Upload Attendee Data', class: 'btn btn-primary', title: 'Current data will be overriden.', data: { toggle: 'tooltip', placement: 'right' }, disabled: disabled %>
+        	    <%= f.submit 'Upload Attendee Data', class: 'btn btn-primary', title: 'Current data will be overwritten.', data: { toggle: 'tooltip', placement: 'right' }, disabled: disabled %>
             <% else %>
         	    <%= f.submit 'Upload Attendee Data', class: 'btn btn-primary', disabled: disabled %>
             <% end %>
@@ -122,7 +122,7 @@
             <%= f.hidden_field :table, value: 'presenters' %>
             <%= f.file_field :csv, disabled: disabled %><br/>
             <% if @conference.presenters.count > 0 %>
-        	    <%= f.submit 'Upload Presenter Data', class: 'btn btn-primary', title: 'Current data will be overriden.', data: { toggle: 'tooltip', placement: 'right' }, disabled: disabled %>
+        	    <%= f.submit 'Upload Presenter Data', class: 'btn btn-primary', title: 'Current data will be overwritten.', data: { toggle: 'tooltip', placement: 'right' }, disabled: disabled %>
             <% else %>
         	    <%= f.submit 'Upload Presenter Data', class: 'btn btn-primary', disabled: disabled %>
             <% end %>
