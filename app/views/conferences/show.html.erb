@@ -180,7 +180,7 @@
 
                 <p>
                   Please submit your selections by <br/>
-                  <%= date_select :email, :deadline, { selected: Date.today + 3.days, order: [:month, :day, :year], start_year: Date.today.year, disabled: disabled }, { class: 'form-control', style: 'display: inline-block; width: auto; vertical-align: middle' } %>.
+                  <%= date_select :email, :deadline, { selected: @conference.deadline.nil? ? Date.today + 3.days : @conference.deadline, order: [:month, :day, :year], start_year: Date.today.year, disabled: disabled }, { class: 'form-control', style: 'display: inline-block; width: auto; vertical-align: middle' } %>.
                 </p>
 
                 <p>
