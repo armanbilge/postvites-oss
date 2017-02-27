@@ -39,10 +39,11 @@
 <table style="width: 100%">
   <tr>
     <td>
-      <div class="well">
-        <legend>Twitter Hashtag</legend>
+      <div class="well" style="overflow: hidden">
+        <legend>Twitter Integration</legend>
         <%= form_for @conference, validate: true, html: {class: 'form'} do |f| %>
-          <%= f.text_field :hashtag, placeholder: ' #myconference' %> &nbsp;
+          <%= f.text_field :hashtag, placeholder: ' #hashtag' %> <br/><br/>
+          <%= f.text_field :handle, placeholder: ' @handle' %>
           <%= f.submit 'Update', class: 'btn btn-primary', style: 'float: right'%>
         <% end %>
       </div>
@@ -51,11 +52,12 @@
       <div style="width: 16px">
     </td>
     <td>
-      <div class="well">
+      <div class="well" style="overflow: hidden">
         <legend>Conference Time Zone</legend>
         <%= form_for @conference, validate: true, html: {class: 'form'} do |f| %>
           <% disabled = @conference.step > 2 %>
           <%= f.select :time_zone, ActiveSupport::TimeZone::MAPPING.keys, {}, { style: 'text-align: right', disabled: disabled } %>
+           <br/><br/>
           <%= f.submit 'Update', class: 'btn btn-primary', disabled: disabled, style: 'float: right'%>
         <% end %>
       </div>

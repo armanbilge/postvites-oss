@@ -158,8 +158,8 @@ class ConferencesController < ApplicationController
       end
       flash[:info] = 'Emailed presenters.'
       if not @conference.hashtag.blank?
-        $twitter.update("#{@conference.hashtag} poster presenters. Invite someone to view your poster using our app! Check your email for a link")
-        $twitter.delay(run_at: deadline.in_time_zone(@conference.get_time_zone) - 1.day).update("#{@conference.hashtag} poster presenters. Make sure to submit your invitations by the end of today!")
+        $twitter.update("#{@conference.hashtag} poster presenters: Invite someone to view your poster using our app! Check your email for a link #{@conference.handle}")
+        $twitter.delay(run_at: deadline.in_time_zone(@conference.get_time_zone) - 1.day).update("#{@conference.hashtag} poster presenters: Make sure to submit your invitations by the end of today! #{@conference.handle}")
         flash[:info] += ' Posted to Twitter.'
       end
     rescue Exception => e
@@ -198,9 +198,9 @@ class ConferencesController < ApplicationController
         end
       end
       if not @conference.hashtag.blank?
-        $twitter.update("Just sent out poster invitations for #{@conference.hashtag}. Presenters look forward to seeing you at their posters!")
+        $twitter.update("Just sent out poster invitations for #{@conference.hashtag}. Presenters look forward to seeing you at their posters! #{@conference.handle}")
         presenters.distinct.pluck(:session_day).uniq.each do |day|
-          $twitter.delay(run_at: day.in_time_zone(@conference.get_time_zone) + 5.hours).update("#{@conference.hashtag} poster session today. Presenters look forward to seeing you at their posters!")
+          $twitter.delay(run_at: day.in_time_zone(@conference.get_time_zone) + 5.hours).update("#{@conference.hashtag} poster session today. Presenters look forward to seeing you at their posters! #{@conference.handle}")
         end
       end
       flash[:info] = 'Emailed invitations to attendees.'
@@ -218,7 +218,7 @@ class ConferencesController < ApplicationController
   end
 
   def update_params
-    params.require(:conference).permit(:invite_limit, :poster_limit, :email, :logo_url, :time_zone, :hashtag)
+    params.require(:conference).permit(:invite_limit, :poster_limit, :email, :logo_url, :time_zone, :hashtag, :handle)
   end
 
   def upload_params
