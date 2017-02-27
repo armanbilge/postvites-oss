@@ -9,6 +9,8 @@
 <br/>
 <% if @presenter.conference.step == 2 %>
 
+  <p>Hi <%= @presenter.first %>!</p>
+
   <p>You may invite up to <%= pluralize(@presenter.conference.invite_limit, 'conference attendee') %> to your poster, "<%= @presenter.title %>".</p>
 
 	<p>You can change your selections until <%= @presenter.conference.deadline.to_formatted_s(:long) %>. Thank you!</p>
