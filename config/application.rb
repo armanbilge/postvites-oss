@@ -23,6 +23,7 @@ module Postvite
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
+    config.x.home_page = ENV['HOME_PAGE']
     config.x.admin_email = ENV['ADMIN_EMAIL']
     config.x.from_email = ENV['FROM_EMAIL']
 
