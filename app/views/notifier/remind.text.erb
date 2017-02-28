@@ -1,8 +1,8 @@
 <% count = @recipient.presenters.where(session_day: @day).count %>
-Just a friendly reminder that the following <%= 'poster'.pluralize(count) %> that you've been invited to <% count == 1 ? 'is' : 'are' %> on display today. We hope you will stop by!
+Just a friendly reminder that you've been invited to the following <%= 'poster'.pluralize(count) %> on display today.
 
 <% @recipient.presenters.where(session_day: @day).sort_by { |p| p.vital }.each do |p| %>
 <% invite = Invitation.find_by(attendee_id: @recipient.id, presenter_id: p.id)%>
-<%= "#{p.info(invite.include_email)}#{"\nMessage:\n" + invite.message unless invite.message.blank?}" %>
+<%= "#{p.info(invite.include_email)}" %>
 
 <% end %>
