@@ -199,7 +199,7 @@ class ConferencesController < ApplicationController
       end
       if not @conference.hashtag.blank?
         $twitter.update("Just sent out poster invitations for #{@conference.hashtag}. Presenters look forward to seeing you at their posters! #{@conference.handle}")
-        presenters.distinct.pluck(:session_day).uniq.each do |day|
+        @conference.presenters.distinct.pluck(:session_day).uniq.each do |day|
           $twitter.delay(run_at: day.in_time_zone(@conference.get_time_zone) + 5.hours).update("#{@conference.hashtag} poster session today. Presenters look forward to seeing you at their posters! #{@conference.handle}")
         end
       end
