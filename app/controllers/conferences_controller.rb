@@ -234,11 +234,11 @@ class ConferencesController < ApplicationController
   end
 
   def email_presenters_params
-    params.require(:email).permit(:subject, :message, 'deadline(1i)', 'deadline(2i)', 'deadline(3i)', :remind)
+    params.require(:email).permit(:subject, :message, 'deadline(1i)', 'deadline(2i)', 'deadline(3i)')
   end
 
   def email_attendees_params
-    params.require(:email).permit(:subject, :message)
+    params.require(:email).permit(:subject, :message, :remind)
   end
 
 end
