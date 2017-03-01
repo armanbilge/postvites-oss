@@ -21,7 +21,8 @@ class PagesController < ApplicationController
   end
 
   def ping
-    render status: 200, json: {}
+    headers['Access-Control-Allow-Origin'] = '*'
+    render text: '', content_type: 'text/plain'
   end
 
 end
