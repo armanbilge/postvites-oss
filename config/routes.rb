@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   get '/contact', to: 'pages#contact'
   post '/contact', to: 'pages#send_message'
 
+  get '/ping', to: 'pages#ping'
+
   get '/auth/:provider/callback', to: 'sessions#create'
   delete '/signout', to: 'sessions#destroy', as: 'signout'
 

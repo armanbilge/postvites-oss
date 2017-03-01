@@ -20,4 +20,8 @@ class PagesController < ApplicationController
     params.require(:contact).permit(:name, :email, :message)
   end
 
+  def ping
+    render status: 200, json: {}
+  end
+
 end
