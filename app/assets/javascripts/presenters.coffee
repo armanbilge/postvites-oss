@@ -16,19 +16,20 @@ ready = ->
       )
       $('#multiselect').change(-> $('#multiselect_rightSelected').prop('disabled', $('#multiselect').val() == undefined || $('#multiselect').val().length + $('#multiselect_to option').length > window.invite_limit))
       if navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1
-        $('#multiselect').find('option').each((i, option) ->
-          $(option).data('text', $(option).text())
-        )
         $("input[id^='keyword']").change( ->
           visible = new Set(_.intersection(window.attendees, $("input[id^='keyword']").map((i, k) -> if k.checked then [$(k).data('attendees')] else [window.attendees]).get()...))
-          $('#multiselect').find('option').each((i, option) ->
-            if visible.has(parseInt(option.value))
-              $(option).prop('disabled', false)
-              $(option).text($(option).data('text'))
+          $('#multiselect').children().each((i, option) ->
+            if $(option).prop('tagName') != 'OPTION'
+              if visible.has(parseInt($(option).attr('value')))
+                x = $('<option>' + option.innerHTML + '</option>')
+                x.attr('value', $(option).attr('value'))
+                $(option).replaceWith(x);
             else
-              $(option).prop('disabled', true)
-              $(option).text('')
-            )
+              if !visible.has(parseInt(option.value))
+                x = $('<div>' + option.innerHTML + '</div>')
+                x.attr('value', $(option).attr('value'))
+                $(option).replaceWith(x);
+          )
         )
       else
         $("input[id^='keyword']").change( ->
