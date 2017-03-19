@@ -24,8 +24,8 @@ Rails.application.routes.draw do
 
   resources :presenters, path: 'invite', only: [:show, :update], param: :secret
 
-  get '/invitations/:presenter_id/:attendee_id', to: 'invitations#show'
-  patch '/invitations/:presenter_id/:attendee_id', to: 'invitations#update'
+  get '/invitations/:presenter_secret/:attendee_id', to: 'invitations#show'
+  patch '/invitations/:presenter_secret/:attendee_id', to: 'invitations#update'
 
   default_url_options host: ENV['HOST']
 

@@ -67,7 +67,7 @@
   <% end %>
 
   <%= javascript_tag do %>
-    window.presenter_id = <%= @presenter.id %>
+    window.presenter_secret = "<%= @presenter.secret %>";
     window.invite_limit = <%= @presenter.conference.invite_limit %>;
   	window.attendees = <%= @presenter.conference.attendees.map { |a| a.id } %>;
     <% @presenter.conference.keywords.each do |k| %>
