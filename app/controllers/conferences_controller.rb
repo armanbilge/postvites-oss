@@ -158,8 +158,8 @@ class ConferencesController < ApplicationController
       end
       flash[:info] = 'Emailed presenters.'
       if not @conference.hashtag.blank?
-        $twitter.update("#{@conference.hashtag} poster presenters: Invite someone to view your poster using our app! Check your email for a link #{@conference.handle}")
-        $twitter.delay(run_at: deadline.in_time_zone(@conference.get_time_zone) - 1.day).update("#{@conference.hashtag} poster presenters: Make sure to submit your invitations by the end of today! #{@conference.handle}")
+        tweet("#{@conference.hashtag} poster presenters: Invite someone to view your poster using our app! Check your email for a link #{@conference.handle}")
+        self.delay(run_at: deadline.in_time_zone(@conference.get_time_zone) - 1.day).tweet("#{@conference.hashtag} poster presenters: Make sure to submit your invitations by the end of today! #{@conference.handle}")
         flash[:info] += ' Posted to Twitter.'
       end
     rescue Exception => e
@@ -198,7 +198,7 @@ class ConferencesController < ApplicationController
         end
       end
       if not @conference.hashtag.blank?
-        $twitter.update("Just sent out poster invitations for #{@conference.hashtag}. Presenters look forward to seeing you at their posters! #{@conference.handle}")
+        tweet("Just sent out poster invitations for #{@conference.hashtag}. Presenters look forward to seeing you at their posters! #{@conference.handle}")
         @conference.presenters.distinct.pluck(:session_day).uniq.each do |day|
           self.delay(run_at: day.in_time_zone(@conference.get_time_zone) + 5.hours).tweet("#{@conference.hashtag} poster session today. Presenters look forward to seeing you at their posters! #{@conference.handle}")
         end
