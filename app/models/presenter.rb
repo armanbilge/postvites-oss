@@ -12,6 +12,10 @@ class Presenter < ActiveRecord::Base
   validate :session_day_must_be_in_future
   validates :secret, presence: true, uniqueness: true
 
+  def available_attendees
+    attendees.union(conference.available_attendees)
+  end
+
   def vital
     "#{last}, #{first}#{ ' (' + affiliation + ')' unless affiliation.blank?}"
   end

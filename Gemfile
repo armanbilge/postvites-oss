@@ -23,6 +23,8 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
+gem 'active_record_union'
+
 gem 'bootstrap-sass'
 
 gem 'charlock_holmes'
@@ -32,6 +34,8 @@ gem 'chronic'
 gem 'delayed_job_active_record'
 
 gem 'fuzzy_match'
+
+gem 'kaminari'
 
 gem 'omniauth-google-oauth2'
 

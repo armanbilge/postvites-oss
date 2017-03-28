@@ -22,7 +22,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :presenters, path: 'invite', only: [:show, :update], param: :secret
+  resources :presenters, path: 'invite', only: [:show, :update], param: :secret do
+    member do
+      get :page
+    end
+  end
 
   get '/invitations/:presenter_secret/:attendee_id', to: 'invitations#show'
   patch '/invitations/:presenter_secret/:attendee_id', to: 'invitations#update'
