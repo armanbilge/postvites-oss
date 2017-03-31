@@ -20,7 +20,7 @@ class InvitationsController < ApplicationController
   end
 
   def invitation_path(invitation)
-    "/invitations/#{invitation.presenter_id}/#{invitation.attendee_id}"
+    "/invitations/#{invitation.presenter.secret}/#{invitation.attendee_id}"
   end
 
   private
