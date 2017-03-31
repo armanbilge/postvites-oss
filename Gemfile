@@ -35,8 +35,6 @@ gem 'delayed_job_active_record'
 
 gem 'fuzzy_match'
 
-gem 'kaminari'
-
 gem 'omniauth-google-oauth2'
 
 gem 'postmark-rails'
