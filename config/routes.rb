@@ -24,12 +24,15 @@ Rails.application.routes.draw do
 
   resources :presenters, path: 'invite', only: [:show, :update], param: :secret do
     member do
-      get :page
+      get :mobile
+      post :page
     end
   end
 
   get '/invitations/:presenter_secret/:attendee_id', to: 'invitations#show'
   patch '/invitations/:presenter_secret/:attendee_id', to: 'invitations#update'
+  get '/invitations/:presenter_secret/:attendee_id/json', to: 'invitations#json'
+  delete '/invitations/:presenter_secret/:attendee_id', to: 'invitations#destroy'
 
   default_url_options host: ENV['HOST']
 

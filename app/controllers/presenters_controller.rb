@@ -4,6 +4,11 @@ class PresentersController < ApplicationController
     @presenter = Presenter.find_by_secret(params[:secret]) or not_found
   end
 
+  def mobile
+    @presenter = Presenter.find_by_secret(params[:secret]) or not_found
+    render layout: false
+  end
+
   def update
     @presenter = Presenter.find_by_secret(params[:secret]) or not_found
     begin
@@ -16,9 +21,8 @@ class PresentersController < ApplicationController
   end
 
   def page
-    require 'set'
     @presenter = Presenter.find_by_secret(page_params[:secret]) or not_found
-    invited = Set.new(@presenter.attendees.select(:id))
+    invited = @presenter.attendees.pluck(:id).to_set
     if page_params[:selected]
       attendees = @presenter.attendees
     else
@@ -29,15 +33,15 @@ class PresentersController < ApplicationController
     for k in page_params.fetch(:keyword_ids, [])
       query = query.where('exists (select 1 from attendee_keywords ak where ak.attendee_id = attendees.id and keyword_id = ?)', k)
     end
-    data = query.order(:last, :first).page(page_params[:page].to_i).per(page_params[:per].to_i).map do |a|
+    length = query.count
+    rows = query.order(:last, :first).offset(page_params[:offset].to_i).limit(page_params[:limit].to_i).map do |a|
       {
-        first: a.first,
-        last: a.last,
-        affiliation: a.affiliation,
+        id: a.id,
+        vital: a.vital,
         invited: invited.include?(a.id)
       }
     end
-    render json: data
+    render json: {length: length, rows: rows}
   end
 
   private
@@ -47,7 +51,7 @@ class PresentersController < ApplicationController
   end
 
   def page_params
-    params.permit(:secret, :selected, :page, :per, keyword_ids: [])
+    params.permit(:secret, :selected, :offset, :limit, keyword_ids: [])
   end
 
 end

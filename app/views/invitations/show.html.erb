@@ -10,7 +10,7 @@
     	  <%= value %>
     	</div>
   	<% end %>
-    <%= form_for @invitation, url: invitation_path(@invitation), method: :patch do |f| %>
+    <%= form_for @invitation, url: "/invitations/#{@invitation.presenter.secret}/#{@invitation.attendee.id}", method: :patch do |f| %>
       Message (optional):<br/>
       <%= f.text_area :message, size: "60x6" %>
       <br/><br/>

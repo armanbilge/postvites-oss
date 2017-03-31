@@ -1,0 +1,253 @@
+<html lang="en" >
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <%= csrf_meta_tag %>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+  <%= javascript_include_tag 'clusterize' %>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/clusterize.js/0.17.6/clusterize.min.css">
+  <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <%= javascript_tag do %>
+    function invite(cb, i) {
+      if (cb.checked) {
+        if (window.count < window.invite_limit) {
+          $.ajax({
+            type: 'PATCH',
+            url: '/invitations/' + window.presenter_secret + '/' + i,
+            data: {
+              authenticity_token: $('meta[name="csrf-token"]').attr('content'),
+              invitation: {
+                mobile: true,
+                message: '',
+                include_email: false
+              }
+            },
+            success: function() {
+              $('#message\\[' + i + '\\]').show();
+              ++window.count;
+            },
+            error: function() {
+              Materialize.toast('Sorry, this attendee is no longer available.', 3000);
+              cb.checked = false;
+              window.clusterize.refresh(true);
+            }
+          });
+        } else {
+          Materialize.toast('Sorry, you cannot invite more than ' + window.invite_limit + ' attendees.', 3000);
+          cb.checked = false;
+        }
+      } else {
+        $.ajax({
+          type: 'DELETE',
+          url: '/invitations/' + window.presenter_secret + '/' + i,
+          data: {
+            authenticity_token: $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+        $('#message\\[' + i + '\\]').hide();
+        --window.count;
+      }
+    }
+    function message() {
+      $.ajax({
+        type: 'PATCH',
+        url: '/invitations/' + window.presenter_secret + '/' + window.messaging,
+        data: {
+          authenticity_token: $('meta[name="csrf-token"]').attr('content'),
+          invitation: {
+            mobile: true,
+            message: $('#message').val(),
+            include_email: $('#include_email').prop('checked')
+          }
+        },
+        success: function() {
+          Materialize.toast('Message saved.', 3000);
+          $('#message-modal').modal('close');
+        },
+        error: function() {
+          Materialize.toast('Sorry, there was an unknown error.', 3000);
+        }
+      });
+    }
+    function toggleKeyword(cb, i) {
+      if (cb.checked) {
+        window.keyword_ids.push(i);
+        window.clusterize.refresh(true);
+      } else {
+        window.keyword_ids.splice(window.keyword_ids.indexOf(i), 1);
+        window.clusterize.refresh(true);
+      }
+    }
+    function toggleSelected(a) {
+      window.selected = !window.selected;
+      if (window.selected) {
+        $(a).text('indeterminate_check_box');
+      } else {
+        $(a).text('check_box');
+      }
+      window.clusterize.refresh(true);
+    }
+    function toggleMessage(i) {
+      window.messaging = i;
+      if ($('#attendee\\[' + i + '\\]').prop('checked')) {
+        $.ajax({
+          type: 'GET',
+          url: '/invitations/' + window.presenter_secret + '/' + i + '/json',
+          dataType: 'json',
+          success: function(data) {
+            $('#message_attendee').text('To: ' + data.attendee);
+            $('#message').val(data.message);
+            $('#include_email').prop('checked', data.include_email);
+          }
+        });
+        $('#message-modal').modal('open');
+      }
+    }
+    function ready($) {
+      $('#filter-modal').modal();
+      $('#help-modal').modal();
+      $('#message-modal').modal();
+      window.clusterize = new Clusterize({
+        rows: function(offset, limit) {
+          var response = $.ajax({
+            type: "POST",
+            url: "/invite/" + window.presenter_secret + "/page",
+            data: JSON.stringify({
+              authenticity_token: $('meta[name="csrf-token"]').attr('content'),
+              offset: offset,
+              limit: limit,
+              selected: window.selected,
+              keyword_ids: window.keyword_ids
+            }),
+            dataType: "json",
+            contentType: 'application/json',
+            async: false
+          }).responseJSON;
+          response.rows = $.map(response.rows, function(a, i) {
+            return '<li class="collection-item"><input type="checkbox" ' + (a.invited ? 'checked="checked"' : '') + '" id="attendee[' + a.id + ']" onchange="invite(this, ' + a.id + ')" class="filled-in primary-content"/><label for="attendee[' + a.id + ']"/>' + a.vital + '</label><a href="#!" id="message[' + a.id + ']" class="secondary-content material-icons" style="color: #B00610; position: absolute; right: 5%; display: ' + (a.invited ? 'inline' : 'none') + '" onclick="toggleMessage(' + a.id + ')">insert_comment</a></li>';
+          });
+          return response;
+        },
+        scrollId: 'scrollArea',
+        contentId: 'contentArea',
+        tag: 'li',
+        no_data_text: 'No matches',
+        no_data_class: 'collection-item'
+
+      });
+    }
+    $(document).ready(ready);
+    $(document).on('page:load', ready);
+  <% end %>
+  <style>
+    [type="checkbox"].filled-in:checked + label:after {
+      top: 0;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #B00610;
+      background-color: #B00610;
+      z-index: 0;
+    }
+    [type="checkbox"].filled-in.tabbed:checked:focus + label:after {
+      border-radius: 2px;
+      background-color: #B00610;
+      border-color: #B00610;
+    }
+  </style>
+</head>
+<body id="scrollArea" style="overflow: auto">
+
+  <div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper" style="background: #B00610">
+      <div class="brand-logo left">&nbsp;postvites</div>
+      <ul id="nav-mobile" class="right">
+        <!-- <li><a class="material-icons" style="font-size: 28px; vertical-align: middle">search</a></li> -->
+        <li><a href="#" onclick="toggleSelected(this)" class="material-icons" style="font-size: 28px; vertical-align: middle">check_box</a></li>
+        <li><a href="#filter-modal" class="material-icons" style="font-size: 28px; vertical-align: middle">filter_list</a></li>
+        <li><a href="#help-modal" class="material-icons" style="font-size: 28px; vertical-align: middle">help_outline</a></li>
+      </ul>
+    </div>
+  </nav>
+  </div>
+
+  <ul id="contentArea" class="collection clusterize-content">
+  <!-- <% @presenter.conference.available_attendees.sort_by { |a| a.vital }.each do |a| %>
+    <li id="item_available[<%= a.id %>]" class="collection-item">
+      <input type="checkbox" id="available[<%= a.id %>]" class="filled-in primary-content" onchange="invite(this, <%= a.id %>)"/>
+      <label for="available[<%= a.id %>]"><%= a.vital %></label>
+    </li>
+  <% end %> -->
+    <li class="collection-item">Data loading...</li>
+  </ul>
+
+  <div id="filter-modal" class="modal modal-fixed-footer bottom-sheet">
+    <div class="modal-content">
+      <ul>
+      <% @presenter.conference.keywords.sort_by { |k| k.name }.each do |k| %>
+      <li>
+        <div style="white-space: nowrap; text-overflow: ellipsis">
+          <input type="checkbox" id="keyword[<%= k.id %>]" onchange="toggleKeyword(this, <%= k.id %>)" class="filled-in primary-content"/>
+          <label for="keyword[<%= k.id %>]"><%= k.name %></label>
+        </div>
+      </li>
+      <% end %>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <h5 style="float: left">Filter by interests</h5>
+      <a href="#" class="modal-action modal-close btn-flat">Done</a>
+    </div>
+  </div>
+
+  <div id="help-modal" class="modal modal-fixed-footer bottom-sheet">
+    <div class="modal-content">
+
+      <p>Hi <%= @presenter.first %>!</p>
+
+      <p>You may invite up to <%= pluralize(@presenter.conference.invite_limit, 'conference attendee') %> to your poster, "<%= @presenter.title %>".</p>
+
+      <p>Use <i class="material-icons" style="vertical-align: middle">filter_list</i> to filter attendees by their interests and <i class="material-icons" style="vertical-align: middle">message</i> to write a message.</p>
+
+    	<p>You can change your selections until <%= @presenter.conference.deadline.to_formatted_s(:long) %>. Thank you!</p>
+
+      <%= image_tag @presenter.conference.logo_url, style: 'object-fit: contain; width: 100%; height: 20%' %>
+    </div>
+    <div class="modal-footer">
+      <h5 style="float: left">Help</h5>
+      <a href="#" class="modal-action modal-close btn-flat">Done</a>
+    </div>
+  </div>
+
+  <div id="message-modal" class="modal modal-fixed-footer bottom-sheet">
+    <div class="modal-content">
+      <div id="message_attendee"></div>
+      <br/>
+      <div>
+      <form>
+        <label for="message">Message (optional)</label>
+        <textarea id="message" class="materialize-textarea"></textarea>
+        <br>
+        <input id="include_email" type="checkbox" class="filled-in primary-content"/>
+        <label for="include_email">Include my email</label>
+      </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <h5 style="float: left">Message</h5>
+      <a href="#" onclick="message()" class="modal-action btn-flat">Save</a>
+      <a href="#" class="modal-action modal-close btn-flat">Cancel</a>
+    </div>
+  </div>
+
+  <%= javascript_tag do %>
+    window.count = <%= @presenter.attendees.count %>;
+    window.keyword_ids = [];
+    window.selected = false;
+    window.presenter_secret = "<%= @presenter.secret %>";
+    window.invite_limit = <%= @presenter.conference.invite_limit %>;
+  <% end %>
+
+</body>
+</html>
