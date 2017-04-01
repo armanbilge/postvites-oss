@@ -1,5 +1,9 @@
 <% content_for :for_head do %>
   <%= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js' %>
+  <%= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/ismobilejs/0.4.1/isMobile.min.js' %>
+  <%= javascript_tag do %>
+    if (isMobile.any) document.location += '/mobile';
+  <% end %>
 <% end %>
 
 <%= image_tag @presenter.conference.logo_url, style: 'object-fit: contain; width: 500px; height: 128px; float: right' %>
