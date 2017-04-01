@@ -82,9 +82,9 @@
     function toggleSelected(a) {
       window.selected = !window.selected;
       if (window.selected) {
-        $(a).text('indeterminate_check_box');
+        $(a).find('i').text('indeterminate_check_box');
       } else {
-        $(a).text('check_box');
+        $(a).find('i').text('check_box');
       }
       window.clusterize.refresh(true);
     }
