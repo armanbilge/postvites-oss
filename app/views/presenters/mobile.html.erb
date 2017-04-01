@@ -182,7 +182,7 @@
     <li class="collection-item">Data loading...</li>
   </ul>
 
-  <div id="filter-modal" class="modal modal-fixed-footer bottom-sheet">
+  <div id="filter-modal" class="modal modal-fixed-footer bottom-sheet" style="max-height: 100%">
     <div class="modal-content">
       <ul>
       <% @presenter.conference.keywords.sort_by { |k| k.name }.each do |k| %>
@@ -201,7 +201,7 @@
     </div>
   </div>
 
-  <div id="help-modal" class="modal modal-fixed-footer bottom-sheet">
+  <div id="help-modal" class="modal modal-fixed-footer bottom-sheet" style="max-height: 100%">
     <div class="modal-content">
 
       <p>Hi <%= @presenter.first %>!</p>
@@ -220,7 +220,7 @@
     </div>
   </div>
 
-  <div id="message-modal" class="modal modal-fixed-footer bottom-sheet">
+  <div id="message-modal" class="modal modal-fixed-footer bottom-sheet" style="max-height: 100%">
     <div class="modal-content">
       <div id="message_attendee"></div>
       <br/>
