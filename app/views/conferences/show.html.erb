@@ -385,7 +385,6 @@
               <th>Last, First</th>
               <th>Email</th>
               <th>Title</th>
-              <th>Responded?</th>
             </tr>
           </thead>
     	    <% @conference.presenters.sort_by { |p| p.last }.each do |presenter| %>
@@ -393,7 +392,6 @@
     	        <td><%= presenter.last %>, <%= presenter.first %></td>
     	        <td style="word-wrap: break-word"><%= presenter.email %></td>
     	        <td><%= presenter.title %></td>
-    	        <td><%= link_to presenter.responded? ? 'Yes' : 'No', presenter %></td>
     	      </tr>
     	    <% end %>
     	  </table>
